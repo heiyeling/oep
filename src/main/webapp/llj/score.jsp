@@ -6,13 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>成绩查询</title>
 <!-- 先引入jquery -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.js"></script>
 <!-- 引入chart.js -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/Chart.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/Chart.js"></script>
 <!-- 引入bootstrap -->
-<link type="text/css" href="${pageContext.request.contextPath}/js/bootstrap.min.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/queryscore.js"></script>
+<link type="text/css" href="${pageContext.request.contextPath}/statics/js/bootstrap.min.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/statics/js/queryscore.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
