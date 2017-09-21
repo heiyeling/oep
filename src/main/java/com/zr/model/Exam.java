@@ -1,6 +1,6 @@
 package com.zr.model;
 
-public class exam {
+public class Exam {
 	private int e_id;
 	private String e_name;
 	private String e_starttime;

@@ -1,6 +1,6 @@
 package com.zr.model;
 
-public class scoreofuser {
+public class Scoreofuser {
 	private int u_id;
 	private int e_id;
 	private int score;

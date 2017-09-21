@@ -1,6 +1,6 @@
 package com.zr.model;
 
-public class user {
+public class User {
 	private int u_id;
 	private String u_name;
 	private String u_password;
