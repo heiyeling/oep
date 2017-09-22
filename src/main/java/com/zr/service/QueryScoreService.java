@@ -22,6 +22,20 @@ public interface QueryScoreService {
 	public JSONArray getExamMsg2(String ename,int page,int pageSize);
 	
 	/**
+	 * 通过用户名查询考生的所有成绩
+	 * @param uname
+	 * @return
+	 */
+	public JSONArray getScoreByUname(String uname);
+	
+	/**
+	 * 通过考试名查询参与者的所有成绩
+	 * @param ename
+	 * @return
+	 */
+	public JSONArray getScoreByEname(String ename);
+	
+	/**
 	 * 获取用户参与的考试总数
 	 * @param uname
 	 * @return

@@ -13,6 +13,8 @@
 		$('#query1').click(function() {
 			$("#a").empty();
 			$("#b").empty();
+			$("#chdiv1").empty();
+			$("#chdiv1").append("<canvas id='myChart' width='300' height='300'></canvas>");
 			$.ajax({
 				url : 'queryscore',
 				type : 'post',
@@ -33,6 +35,7 @@
 					totalpage = data.total;
 					var bu = data.total;
 					var stus = data.students;
+					var all1 = data.allscore;
 					$("#b").append("<button class='bs btn btn-default' id='first' disabled='disabled'>" + "首页" + "</button>");
 					$("#b").append("<button class='bs btn btn-default' id='pre' disabled='disabled'>" + "上一页" + "</button>");
 					for (var i = 0; i < bu; i++) {
@@ -48,13 +51,45 @@
 						$("#last").attr("disabled",true);
 						$("#next").attr("disabled",true);
 					}
-					//console.log(stus);
+					var lab = new Array();
+					var sco = new Array();
+					$.each(all1, function(i, v) {
+						lab[i] = v.ename;
+						sco[i] = v.score; 
+					})
 					$.each(stus, function(i, v) {
 						//console.log(v);
 						$("#a").append(
 								"<tr><td>" + v.uname + "</td><td>" + v.ename
 										+ "</td><td>" + v.score + "</td></tr>")
 					})
+					//alert(111);
+					//console.log(lab);
+					var chart1 = {
+						labels :lab,
+						datasets : [
+						            {
+						            	label: $('#in1').val()+'成绩',
+						            	backgroundColor : "rgba(57,233,246,0.5)",
+						            	borderColor : "rgba(220,220,220,1)",
+						    			data : sco
+						            }
+						            ]
+					}
+					var ctx = document.getElementById("myChart").getContext("2d");
+				    var myBarChart = new Chart(ctx, {
+				                                        type: 'bar',
+				                                        data: chart1,
+				                                        options : {
+				                                        	scales: {
+				                                                yAxes: [{
+				                                                    ticks: {
+				                                                        beginAtZero:true
+				                                                    }
+				                                                }]
+				                                            }
+				                                        	}
+				                                });
 				}else{
 					$('#d1').show();
 				}
@@ -121,6 +156,8 @@
 		$('#query2').click(function() {
 			$("#c").empty();
 			$("#d").empty();
+			$("#chdiv2").empty();
+			$("#chdiv2").append("<canvas id='myChart2' width='300' height='300'></canvas>");
 			$.ajax({
 				url : 'queryscore',
 				type : 'post',
@@ -141,6 +178,7 @@
 					totalpage2 = data.total;
 					var bu = data.total;
 					var stus = data.students;
+					var all2 = data.allscore2;
 					$("#d").append("<button class='bs2 btn btn-default' id='first2' disabled='disabled'>" + "首页" + "</button>");
 					$("#d").append("<button class='bs2 btn btn-default' id='pre2' disabled='disabled'>" + "上一页" + "</button>");
 					for (var i = 0; i < bu; i++) {
@@ -163,6 +201,34 @@
 								"<tr><td>" + v.ename + "</td><td>" + v.uname
 										+ "</td><td>" + v.score + "</td></tr>")
 					})
+					var s59=0;
+					var s79=0;
+					var s80=0;
+					$.each(all2,function(i,v){
+						if (v.score<60) {
+							s59++;
+						}else if(v.score<80&&v.score>=60){
+							s79++;
+						}else{
+							s80++;
+						}
+					})
+					var chart2 = {
+						labels: [
+						         '60分以下',
+						         '60~79',
+						         '80及以上'
+						     ],
+						datasets: [{
+							backgroundColor:["#FF1CFD","#FD1414","#0A41F4"],
+					        data: [s59, s79, s80]
+					    }],
+					}
+					var ctx = document.getElementById("myChart2").getContext("2d");
+				    var myBarChart = new Chart(ctx, {
+				                                        type: 'pie',
+				                                        data: chart2,
+				                                });
 				}else{
 					$('#d2').show();
 				}
