@@ -26,4 +26,22 @@
   	<servlet-name>queryscore</servlet-name>
   	<url-pattern>/llj/queryscore</url-pattern>
   </servlet-mapping>
+    <!-- 考试查询 -->
+  <servlet-mapping>
+    <servlet-name>EMSSearchAction</servlet-name>
+    <url-pattern>/ems/search</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EMSSearchAction</servlet-name>
+    <servlet-class>com.zr.action.ems.SearchAction</servlet-class>
+  </servlet>
+  <!-- 删除考试 -->
+  <servlet-mapping>
+    <servlet-name>EMSDeleteAction</servlet-name>
+    <url-pattern>/ems/delete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EMSDeleteAction</servlet-name>
+    <servlet-class>com.zr.action.ems.DeleteAction</servlet-class>
+  </servlet>
 </web-app>
