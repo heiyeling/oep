@@ -53,33 +53,57 @@
 				});
 			}
 		});
-	});
-	function del(){
-		var delrows = $('#tb').datagrid('getSelections');
-		var examId = [];
-		//获取所有选中的exam的id
-		for(var i = 0;i < delrows.length;i++){
-			examId[i] = delrows[i].examId;
-		}
-		//异步请求删除选中的exam
-		$.ajax({
-			url:'${pageContext.request.contextPath}/ems/delete',
-			type:'post',
-			data:{
-				examId : examId
-			},
-			dataType : "json",
-			success : function(data){
-				if(data.result == true){
-					//删除成功并刷新数据
-					alert(data.msg);
-					$('#tb').datagrid("reload");
-				}else{
-					alert(data.msg);
-				}
+		//新增
+		$("#addBtn").linkbutton({
+			iconCls : "icon-add",
+			plain : "true",
+			text : "添加",
+			onClick : function(){
+				location.href = "${pageContext.request.contextPath}/ems/examDetail.jsp";
 			}
 		});
-	}
+		//编辑
+		$("#editBtn").linkbutton({
+			iconCls : "icon-edit",
+			plain : "true",
+			text : "编辑",
+			onClick : function(){
+			}
+		});
+		
+		//删除
+		$("#delBtn").linkbutton({
+			iconCls : "icon-remove",
+			plain : "true",
+			text : "删除",
+			onClick : function(){
+				var delrows = $('#tb').datagrid('getSelections');
+				var examId = [];
+				//获取所有选中的exam的id
+				for(var i = 0;i < delrows.length;i++){
+					examId[i] = delrows[i].examId;
+				}
+				//异步请求删除选中的exam
+				$.ajax({
+					url:'${pageContext.request.contextPath}/ems/delete',
+					type:'post',
+					data:{
+						examId : examId
+					},
+					dataType : "json",
+					success : function(data){
+						if(data.result == true){
+							//删除成功并刷新数据
+							alert(data.msg);
+							$('#tb').datagrid("reload");
+						}else{
+							alert(data.msg);
+						}
+					}
+				});
+			}
+		});
+	});
 </script>
 <body>
     <table id="tb" ></table>
@@ -90,9 +114,9 @@
     	</div>
     </div>
     <div id="ft" style="padding:2px 5px;">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" ></a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"></a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="del()"></a>
+        <a id="addBtn"></a>
+        <a id="editBtn"></a>
+        <a id="delBtn"></a>
         <p style="float: right;font-size: 5px;margin-top: 5px;margin-bottom: 0px;">按住Ctrl可多选</p>
     </div>
 </body>
