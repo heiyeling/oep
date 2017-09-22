@@ -21,5 +21,12 @@ public interface ExamDao {
 	 * @return			删除成功返回true
 	 */
 	boolean deleteByIds(int[] examIds);
+
+	/**
+	 * 新增一门考试记录
+	 * @param exam	考试实体:主键自增,状态默认为false
+	 * @return		插入成功返回true
+	 */
+	boolean insert(Exam exam);
 	
 }

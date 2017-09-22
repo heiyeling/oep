@@ -42,4 +42,15 @@ public class ExamServiceImpl implements ExamService {
 		return examDao.deleteByIds(examIds);
 	}
 
+	@Override
+	public boolean insertExam(String examName, String examStartTime, String examEndTime, int examTotal) {
+		Exam exam = new Exam();
+		exam.setE_name(examName);
+		exam.setE_starttime(examStartTime);
+		exam.setE_endtime(examEndTime);
+		exam.setE_total(examTotal);
+		exam.setE_state("false");
+		return examDao.insert(exam);
+	}
+
 }

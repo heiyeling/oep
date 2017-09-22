@@ -44,4 +44,13 @@
     <servlet-name>EMSDeleteAction</servlet-name>
     <servlet-class>com.zr.action.ems.DeleteAction</servlet-class>
   </servlet>
+  <!-- 新增考试 -->
+  <servlet-mapping>
+    <servlet-name>EMSInsertAction</servlet-name>
+    <url-pattern>/ems/insert</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EMSInsertAction</servlet-name>
+    <servlet-class>com.zr.action.ems.InsertAction</servlet-class>
+  </servlet>
 </web-app>

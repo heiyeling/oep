@@ -109,4 +109,31 @@ public class ExamDaoImpl implements ExamDao {
 		return result;
 	}
 
+	@Override
+	public boolean insert(Exam exam) {
+		// 记录结果
+		boolean result = false;
+		//组装sql语句
+		StringBuffer sql = new StringBuffer();
+		sql.append("INSERT INTO exam ")
+			.append("(exam.e_name,exam.e_starttime,exam.e_endtime,exam.e_state,exam.e_total) ")
+			.append("VALUES (?,?,?,?,?)");
+		// 信息sql部分
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			int i = 1;
+			ps.setString(i++, exam.getE_name());
+			ps.setString(i++, exam.getE_starttime());
+			ps.setString(i++, exam.getE_endtime());
+			ps.setString(i++, exam.getE_state());
+			ps.setInt(i++, exam.getE_total());
+			if(ps.executeUpdate() > 0){
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

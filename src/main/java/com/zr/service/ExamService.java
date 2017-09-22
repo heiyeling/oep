@@ -1,6 +1,5 @@
 package com.zr.service;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public interface ExamService {
@@ -19,4 +18,14 @@ public interface ExamService {
 	 * @return	删除成功返回true
 	 */
 	public boolean deleteExamByIds(int[] examIds);
+
+	/**
+	 * 新增一门考试
+	 * @param examName		考试名
+	 * @param examStartTime	考试开始时间
+	 * @param examEndTime	考试结束时间
+	 * @param examTotal		考试总分
+	 * @return		插入成功返回true
+	 */
+	public boolean insertExam(String examName, String examStartTime, String examEndTime, int examTotal);
 }
