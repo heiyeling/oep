@@ -17,4 +17,13 @@
     <servlet-name>loginAction</servlet-name>
     <servlet-class>action.LoginAction</servlet-class>
   </servlet>
+   <!-- 成绩查询-->
+  <servlet>
+  	<servlet-name>queryscore</servlet-name>
+  	<servlet-class>com.zr.action.QueryScoreAction</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>queryscore</servlet-name>
+  	<url-pattern>/llj/queryscore</url-pattern>
+  </servlet-mapping>
 </web-app>
