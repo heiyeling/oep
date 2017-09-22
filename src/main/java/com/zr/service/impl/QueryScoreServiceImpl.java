@@ -42,7 +42,7 @@ public class QueryScoreServiceImpl implements QueryScoreService {
 		}
 		return ja;
 	}
-
+	
 	@Override
 	public int getUserExamNum(String uname) {
 		int a = qdao.getUserExam(uname);
@@ -77,5 +77,33 @@ public class QueryScoreServiceImpl implements QueryScoreService {
 	public int getEidByEname(String ename) {
 		int a = qdao.getEidByEname(ename);
 		return a;
+	}
+
+	@Override
+	public JSONArray getScoreByUname(String uname) {
+		List<Scoreofuser> stus = qdao.getScoreByU(uname);
+		JSONArray ja = new JSONArray();
+		for (int i = 0; i < stus.size(); i++) {
+			JSONObject js = new JSONObject();
+			js.put("uname",uname);
+			js.put("ename",qdao.getEnameByEid(stus.get(i).getE_id()));
+			js.put("score",stus.get(i).getScore());
+			ja.add(js);
+		}
+		return ja;
+	}
+
+	@Override
+	public JSONArray getScoreByEname(String ename) {
+		List<Scoreofuser> stus = qdao.getScoreByE(ename);
+		JSONArray ja = new JSONArray();
+		for (int i = 0; i < stus.size(); i++) {
+			JSONObject js = new JSONObject();
+			js.put("ename",ename);
+			js.put("uname",qdao.getUnameByUid(stus.get(i).getU_id()));
+			js.put("score",stus.get(i).getScore());
+			ja.add(js);
+		}
+		return ja;
 	}
 }

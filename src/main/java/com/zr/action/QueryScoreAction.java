@@ -34,6 +34,7 @@ public class QueryScoreAction extends HttpServlet {
 			if(uid!=0){
 				JSONArray l1 = qss.getExamMsg1(uname, page, size);
 				int total = qss.getUserExamNum(uname);
+				JSONArray ch1 = qss.getScoreByUname(uname);
 				int d;
 				d = total%size == 0?total/size:total/size+1;
 				JSONObject json = new JSONObject();
@@ -41,6 +42,7 @@ public class QueryScoreAction extends HttpServlet {
 				json.put("current", page);
 				json.put("total",d);
 				json.put("students", l1);
+				json.put("allscore", ch1);
 				//System.out.println(json.toString());
 				PrintWriter pw = resp.getWriter();
 				pw.write(json.toString());
@@ -60,6 +62,7 @@ public class QueryScoreAction extends HttpServlet {
 				JSONArray l2 = qss.getExamMsg2(ename, page, size);
 				//System.out.println(l2);
 				int total = qss.getExamUserNum(ename);
+				JSONArray ch2 = qss.getScoreByEname(ename);
 				int d;
 				d = total%size == 0?total/size:total/size+1;
 				JSONObject json = new JSONObject();
@@ -67,6 +70,7 @@ public class QueryScoreAction extends HttpServlet {
 				json.put("current", page);
 				json.put("total",d);
 				json.put("students", l2);
+				json.put("allscore2", ch2);
 				PrintWriter pw = resp.getWriter();
 				pw.write(json.toString());
 			}else{

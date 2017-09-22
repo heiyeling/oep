@@ -237,4 +237,66 @@ public class QueryScoreDaoImpl implements QueryScoreDao {
 		return a;
 	}
 
+	@Override
+	public List<Scoreofuser> getScoreByU(String uname) {
+		List<Scoreofuser> stus = new ArrayList<Scoreofuser>();
+		StringBuffer sql = new StringBuffer("");
+		sql.append("SELECT e_id,u_id,score ");
+		sql.append("FROM scoreofuser ");
+		sql.append("WHERE u_id=?");
+		Connection con = JDBCUtil.getConnection();
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(sql.toString());
+			int uid = this.getUidByUname(uname);
+			pst.setInt(1, uid);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Scoreofuser student = new Scoreofuser();
+				student.setU_id(rs.getInt("u_id"));
+				student.setE_id(rs.getInt("e_id"));
+				student.setScore(rs.getInt("score"));
+				stus.add(student);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JDBCUtil.closeJDBC(pst, con);
+		}
+
+		return stus;
+	}
+
+	@Override
+	public List<Scoreofuser> getScoreByE(String ename) {
+		List<Scoreofuser> stus = new ArrayList<Scoreofuser>();
+		StringBuffer sql = new StringBuffer("");
+		sql.append("SELECT e_id,u_id,score ");
+		sql.append("FROM scoreofuser ");
+		sql.append("WHERE e_id=?");
+		Connection con = JDBCUtil.getConnection();
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(sql.toString());
+			int eid = this.getEidByEname(ename);
+			pst.setInt(1, eid);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				Scoreofuser student = new Scoreofuser();
+				student.setU_id(rs.getInt("u_id"));
+				student.setE_id(rs.getInt("e_id"));
+				student.setScore(rs.getInt("score"));
+				stus.add(student);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			JDBCUtil.closeJDBC(pst, con);
+		}
+
+		return stus;
+	}
+
 }
