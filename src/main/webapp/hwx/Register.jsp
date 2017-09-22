@@ -11,10 +11,21 @@
 <title>在线考试平台(OEP)-注册页面</title>
 <script type="text/javascript">
 	$(document).ready(function() {
+		<!--关闭红字警告-->
+		$("#conPsw").focusin(function() {
+			$("#psw-nullerror").css("display", "none");
+			$("#conpsw-nullerror").css("display", "none");
+			$("#conpsw-valierror").css("display", "none");
+		});
+		$("#EMail").focusin(function() {
+			$("#email-nullerror").css("display", "none");
+			$("#email-checkerror").css("display", "none");
+		});
+		
 		<!--判断两次密码是否一致-->
 		$("#conPsw").focusout(function() {
 			$.ajax({
-				url : "valipsw",
+				url : "${pageContext.request.contextPath}/hwx/valipsw",
 				type : "post",
 
 				data : {
@@ -45,7 +56,7 @@
 		<!--判断email地址是否合法-->
 		$("#EMail").focusout(function() {
 			$.ajax({
-				url : "checkemail",
+				url : "${pageContext.request.contextPath}/hwx/checkemail",
 				type : "post",
 
 				data : {
@@ -67,6 +78,43 @@
 
 			});
 		});
+
+		<!--提交注册信息-->
+		$("#registersubmit").click(function() {
+			if ($("#userName").val() == '') {
+				alert("用户名不能为空！");
+			}else if($("#conPassword").val() == ''){
+				alert("密码不能为空！");
+			}else if($("#email").val() == ''){
+				alert("邮箱不能为空！");
+			}else if ($("#telephone").val() == '') {
+				alert("手机号不能为空！");
+			}else {
+
+				$.ajax({
+					url : "${pageContext.request.contextPath}/hwx/register",
+					type : "post",
+
+					data : {
+						userName : $("#userName").val(),
+						password : $("#password").val(),
+						email : $("#email").val(),
+						telephone:$("#telephone").val()
+					},
+					dataType : "json",
+					success : function(data) {
+						if (data == true) {
+							alert("注册成功")
+							location.href="Login.jsp"
+						}else{
+							alert("注册失败")
+						}
+					},
+
+				});
+			}
+		});
+
 	});
 </script>
 
@@ -88,13 +136,13 @@
 					</div>
 					<div class="form-group">
 						<label class="col-sm-0 control-label">密码:</label> <input
-							type="text" id="password" placeholder="请输入密码"
+							type="password" id="password" placeholder="请输入密码"
 							class="form-control">
 						<div id="psw-nullerror" style="color: red; display: none">密码不能为空！</div>
 					</div>
 					<div class="form-group" id="conPsw">
 						<label class="col-sm-0 control-label">确认密码:</label> <input
-							type="text" placeholder="请确认密码" class="form-control"
+							type="password" placeholder="请确认密码" class="form-control"
 							id="conPassword">
 						<div id="conpsw-nullerror" style="color: red; display: none">密码不能为空！</div>
 						<div id="conpsw-valierror" style="color: red; display: none">两次密码输入不一致！</div>
@@ -103,8 +151,8 @@
 						<label class="col-sm-0 control-label">E-mail:</label> <input
 							type="text" id="email" placeholder="请输入e-mail"
 							class="form-control">
-							<div id="email-nullerror" style="color: red; display: none">邮箱地址不能为空！</div>
-							<div id="email-checkerror" style="color: red; display: none">邮箱地址不合法！</div>
+						<div id="email-nullerror" style="color: red; display: none">邮箱地址不能为空！</div>
+						<div id="email-checkerror" style="color: red; display: none">邮箱地址不合法！</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-0 control-label">手机号：</label> <input
@@ -113,8 +161,8 @@
 					</div>
 					<br />
 					<div align="center">
-						<input type="submit" value="提交注册" class="btn btn-success"
-							name="register">
+						<input type="button" value="提交注册" class="btn btn-success"
+							id="registersubmit">
 					</div>
 				</form>
 				<br />
