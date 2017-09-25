@@ -31,20 +31,20 @@ public class InsertAction extends HttpServlet {
 		String examEndTime = req.getParameter("endTime");
 		int examTotal = Integer.valueOf(req.getParameter("examTotal"));
 		//新增
-		boolean result = es.insertExam(examName, examStartTime, examEndTime, examTotal);
+		int result = es.insertExam(examName, examStartTime, examEndTime, examTotal);
 		resp.setCharacterEncoding("utf-8");
 		PrintWriter pw = resp.getWriter();
 		JSONObject json = new JSONObject();
-		if(result){
-			json.put("result", result);
+		if(result != -1){
+			req.getSession().setAttribute("currentExamId", result);
+			json.put("result", true);
 			json.put("msg", "新增考试成功！");
 			json.put("url", req.getContextPath()+"/ems/setQuestion.jsp");
 		}else{
-			json.put("result", result);
+			json.put("result", false);
 			json.put("msg", "新增考试失败！");
 		}
 		pw.write(json.toString());
-		
 	}
 
 }

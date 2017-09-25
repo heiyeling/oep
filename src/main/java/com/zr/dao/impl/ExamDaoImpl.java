@@ -110,14 +110,18 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public boolean insert(Exam exam) {
+	public int insert(Exam exam) {
 		// 记录结果
-		boolean result = false;
+		int result = -1;
 		//组装sql语句
 		StringBuffer sql = new StringBuffer();
+		//插入sql语句
 		sql.append("INSERT INTO exam ")
 			.append("(exam.e_name,exam.e_starttime,exam.e_endtime,exam.e_state,exam.e_total) ")
 			.append("VALUES (?,?,?,?,?)");
+		//获得该考试的记录sql语句
+		StringBuffer getCurrendExamIdSql = new StringBuffer();
+		getCurrendExamIdSql.append("SELECT MAX(exam.e_id) AS currentExamId FROM exam");
 		// 信息sql部分
 		try {
 			PreparedStatement ps = con.prepareStatement(sql.toString());
@@ -127,13 +131,40 @@ public class ExamDaoImpl implements ExamDao {
 			ps.setString(i++, exam.getE_endtime());
 			ps.setString(i++, exam.getE_state());
 			ps.setInt(i++, exam.getE_total());
-			if(ps.executeUpdate() > 0){
-				result = true;
+			//不可重复读？？
+			//并发操作时防止读取到其他管理员插入的记录，确保获取的是本次插入考试的id
+			con.setAutoCommit(false);
+			if(ps.executeUpdate() < 0){
+				return result;
 			}
+			ps = con.prepareStatement(getCurrendExamIdSql.toString());
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				result = rs.getInt("currentExamId");
+			}
+			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
+	@Override
+	public Exam getExamById(int id) {
+		Exam exam = new Exam();
+		//sql语句
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT * FROM exam WHERE e_id = ?");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()){
+				exam = row2entity(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return exam;
+	}
 }

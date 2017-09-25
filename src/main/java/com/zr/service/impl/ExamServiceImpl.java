@@ -43,7 +43,7 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public boolean insertExam(String examName, String examStartTime, String examEndTime, int examTotal) {
+	public int insertExam(String examName, String examStartTime, String examEndTime, int examTotal) {
 		Exam exam = new Exam();
 		exam.setE_name(examName);
 		exam.setE_starttime(examStartTime);
@@ -53,4 +53,16 @@ public class ExamServiceImpl implements ExamService {
 		return examDao.insert(exam);
 	}
 
+	@Override
+	public JSONObject getExamById(int id) {
+		Exam examEntity = examDao.getExamById(id);
+		JSONObject examJson = new JSONObject();
+		examJson.put("examId", examEntity.getE_id());
+		examJson.put("examName", examEntity.getE_name());
+		int length = examEntity.getE_endtime().length();
+		examJson.put("examTime", examEntity.getE_starttime()+" - "+examEntity.getE_endtime().substring(length-8, length));
+		examJson.put("examTotal", examEntity.getE_total());
+		examJson.put("examState", examEntity.getE_state());
+		return examJson;
+	}
 }

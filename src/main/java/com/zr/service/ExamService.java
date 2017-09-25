@@ -1,5 +1,7 @@
 package com.zr.service;
 
+import com.zr.model.Exam;
+
 import net.sf.json.JSONObject;
 
 public interface ExamService {
@@ -25,7 +27,14 @@ public interface ExamService {
 	 * @param examStartTime	考试开始时间
 	 * @param examEndTime	考试结束时间
 	 * @param examTotal		考试总分
-	 * @return		插入成功返回true
+	 * @return		插入成功返回该考试id,否则返回-1
 	 */
-	public boolean insertExam(String examName, String examStartTime, String examEndTime, int examTotal);
+	public int insertExam(String examName, String examStartTime, String examEndTime, int examTotal);
+
+	/**
+	 * 通过id获取考试基本信息
+	 * @param id	id 
+	 * @return	examJson
+	 */
+	public JSONObject getExamById(int id);
 }
