@@ -14,7 +14,11 @@ import com.zr.service.qktemp.QuestionServiceImpl;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
+/**
+ * 获取所有题型
+ * @author Kramer
+ *
+ */
 public class GetQuestionTypeAction extends HttpServlet{
 	QuestionService qs = new QuestionServiceImpl();
 	@Override

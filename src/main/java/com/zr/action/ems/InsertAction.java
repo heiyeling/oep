@@ -36,6 +36,7 @@ public class InsertAction extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 		JSONObject json = new JSONObject();
 		if(result != -1){
+			//将考试信息存到session
 			req.getSession().setAttribute("currentExamId", result);
 			json.put("result", true);
 			json.put("msg", "新增考试成功！");

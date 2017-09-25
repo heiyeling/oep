@@ -31,7 +31,8 @@ public class SetQuestionAction extends HttpServlet{
 		 * 方便调试,记得要改！！！！！
 		 * int currentExamId = (int)req.getSession().getAttribute("currentExamId");
 		 */
-		int currentExamId = 1;
+		int currentExamId = (int)req.getSession().getAttribute("currentExamId");
+		//int currentExamId = 1;
 		int score = Integer.parseInt(req.getParameter("score")); 
 		String[] questionIdsString = req.getParameterValues("questionId[]");
 		int[] questionIds = new int[questionIdsString.length];

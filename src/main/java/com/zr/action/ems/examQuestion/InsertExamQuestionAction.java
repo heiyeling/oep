@@ -31,7 +31,8 @@ public class InsertExamQuestionAction extends HttpServlet {
 		 * int currentExamId = req.getSession().getAttribute("currentExamId");
 		 */
 		
-		int currentExamId = 1;
+		int currentExamId = (int)req.getSession().getAttribute("currentExamId");
+		//int currentExamId = 1;
 		JSONObject exam = es.getExamById(currentExamId);
 		resp.setCharacterEncoding("utf-8");
 		resp.getWriter().write(exam.toString());
