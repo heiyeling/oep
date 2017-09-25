@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zr.dao.impl.EditUserDaoImpl;
 import com.zr.model.User;
 
 public class EditUserAction extends HttpServlet{
+	EditUserDaoImpl  edao = new EditUserDaoImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -30,6 +32,7 @@ public class EditUserAction extends HttpServlet{
 		user.setU_telephone(utelephone);
 		user.setU_email(uemail);
 		user.setU_registertime(uregistertime);
+		edao.editUserByUid(user);
 		
 		
 	}

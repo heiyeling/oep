@@ -37,7 +37,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>EditUser</servlet-name>
-    <servlet-class>com.zr.action.RemoveUserAction</servlet-class>
+    <servlet-class>com.zr.action.EditUserAction</servlet-class>
   </servlet>
   
 </web-app>
