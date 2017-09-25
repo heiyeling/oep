@@ -37,4 +37,13 @@ public interface ExamService {
 	 * @return	examJson
 	 */
 	public JSONObject getExamById(int id);
+
+	/**
+	 * 设置考题
+	 * @param currentExamId	考试id
+	 * @param questionIds	题目id[]
+	 * @param score			分值
+	 * @return
+	 */
+	public boolean setExamQuestion(int currentExamId, int[] questionIds, int score);
 }

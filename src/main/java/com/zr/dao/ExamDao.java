@@ -35,5 +35,19 @@ public interface ExamDao {
 	 * @return
 	 */
 	Exam getExamById(int id);
+
+	/**
+	 * 获取已存在的考题id
+	 * @param examId	考试id
+	 * @return	
+	 */
+	int[] getExistQuestionId(int examId);
+
+	/**
+	 * 批量添加考题
+	 * @param questionIds	
+	 * @return	插入成功则返回true
+	 */
+	boolean insertExamQuestions(int examId,int[] questionIds,int score);
 	
 }

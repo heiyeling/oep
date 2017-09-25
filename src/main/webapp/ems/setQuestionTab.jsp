@@ -312,7 +312,6 @@
 	       		<!-- 单选题设置面板 -->
 				<div id="singleChoicePanel" title="单选题" style="padding:10px">
 					<!-- 已选面板 -->
-					<!-- 					
 					<div>
 					</div>
 					<table id="singleChioceTB1">
@@ -322,14 +321,10 @@
 					   		<p style="margin-top: 5px;">已选题库</p>
 					   	</div>
 					</div>
-					 -->
 					<!-- 可选面板 -->
-					<!-- 
 					<table id="singleChioceTB2">
 					</table>
-					 -->
 					<!-- 搜索框 -->
-					<!-- 
 				    <div id="searchtool" style="height: 30px;">
 				    	<div style="float: left;"><p style="margin-top: 5px;">题库</p></div>
 				    	<div style="float: right;padding:2px 5px;">
@@ -337,7 +332,6 @@
 				        	<a id="searchBtn">Search</a>
 				    	</div>
 				    </div> 
-				     -->
 				</div>
 				<!-- 多选题设置面板 -->
 				<div id="multipleChoicePanel" title="简答题" style="padding:10px">

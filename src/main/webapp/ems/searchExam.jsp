@@ -44,7 +44,6 @@
 		$("#searchBox").textbox();
 		//搜索按钮
 		$("#searchBtn").linkbutton({
-			url : 'search',
 			iconCls : "icon-search",
 			onClick : function(){
 				//重载表格

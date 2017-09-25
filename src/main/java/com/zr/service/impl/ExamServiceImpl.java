@@ -1,5 +1,6 @@
 package com.zr.service.impl;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,4 +66,42 @@ public class ExamServiceImpl implements ExamService {
 		examJson.put("examState", examEntity.getE_state());
 		return examJson;
 	}
+
+	@Override
+	public boolean setExamQuestion(int currentExamId, int[] questionIds,int score) {
+		int[] isExistQuestionId = examDao.getExistQuestionId(currentExamId);
+		Integer[] temp = arrContrast(questionIds,isExistQuestionId);
+		int[] result = new int[temp.length];
+		for(int i = 0;i < temp.length;i++){
+			result[i] = temp[i];
+		}
+		return examDao.insertExamQuestions(currentExamId,result,score);
+	}
+	
+    /**
+     * 去除两个数组中相同的值并返回一个新的数组
+     * @param arr1
+     * @param arr2
+     * @return
+     */
+    private static Integer[] arrContrast(int[] arr1, int[] arr2){  
+        List<Integer> list = new LinkedList<Integer>();  
+        for (Integer str : arr1) {                //处理第一个数组
+            if (!list.contains(str)) {  
+                list.add(str);  
+            }  
+        }  
+        for (Integer str : arr2) {      //如果第二个数组存在和第一个数组相同的值，就删除  
+            if(list.contains(str)){  
+                list.remove(str);  
+            }  
+        }  
+        Integer[] temp = {};   //创建空数组  
+        list.toArray(temp);    //List to Array  
+//        int[] result = {};
+//        for(int i = 0;i < temp.length;i++){
+//        	result[i] = temp[i];
+//        }
+        return list.toArray(temp);
+    }  
 }
