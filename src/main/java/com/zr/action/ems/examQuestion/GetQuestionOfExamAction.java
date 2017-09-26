@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.zr.service.ExamService;
 import com.zr.service.impl.ExamServiceImpl;
 
-import net.sf.json.JSONObject;
+import net.sf.json.JSONArray;
+
 /**
- * 获取考试基本信息
+ * 获取某门考试的试题
  * @author Kramer
  *
  */
-public class GetExamBaseInfoAction extends HttpServlet {
+public class GetQuestionOfExamAction extends HttpServlet{
 	ExamService es = new ExamServiceImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,15 +26,10 @@ public class GetExamBaseInfoAction extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		/**
-		 * 调试使用，记得要改！！！！！！
-		 * 
-		 */
 		int currentExamId = (int)req.getSession().getAttribute("currentExamId");
-//		int currentExamId = 1;
-		req.getSession().setAttribute("currentExamId", currentExamId);
-		JSONObject exam = es.getExamById(currentExamId);
+		JSONArray json = es.getQuestionOfExam(currentExamId);
 		resp.setCharacterEncoding("utf-8");
-		resp.getWriter().write(exam.toString());
+		resp.getWriter().write(json.toString());
 	}
+	
 }

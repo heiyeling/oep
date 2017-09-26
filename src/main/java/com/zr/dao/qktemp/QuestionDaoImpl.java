@@ -26,7 +26,7 @@ public class QuestionDaoImpl implements QuestionDao {
 		try {
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				Type type = new Type();
 				type.setT_id(rs.getInt("t_id"));
 				type.setT_name(rs.getString("t_name"));
@@ -35,29 +35,35 @@ public class QuestionDaoImpl implements QuestionDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return typeList;
 	}
 
 	@Override
-	public int getQustionByTypeIdAndKey(int start, int size, int typeId,String key, List<Question> questionList) {
+	public int getQustionByTypeIdAndKey(int start, int size, int typeId, String key, List<Question> questionList) {
 		int count = 0;
 		String selectSql = new String(" SELECT * ");
 		String countSql = new String(" SELECT COUNT(q_id) AS count");
-		String whereSql = new String(" FROM question WHERE t_id = " + typeId + " AND q_content LIKE '%"+ key +"%'");
-		String limitSql = new String(" LIMIT "+start+","+size);
+		// String whereSql = new String(" FROM question WHERE t_id = " + typeId
+		// + " AND q_content LIKE '%"+ key +"%'");
+		String whereSql = new String();
+		if (typeId == -1)
+			whereSql = " FROM question WHERE q_content LIKE '%" + key + "%'";
+		else
+			whereSql = " FROM question WHERE t_id = " + typeId + " AND q_content LIKE '%" + key + "%'";
+		String limitSql = new String(" LIMIT " + start + "," + size);
 		try {
-			PreparedStatement ps = con.prepareStatement(countSql+whereSql);
+			PreparedStatement ps = con.prepareStatement(countSql + whereSql);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()){
+			if (rs.next()) {
 				count = rs.getInt("count");
 			}
-			ps = con.prepareStatement(selectSql+whereSql+limitSql);
+			ps = con.prepareStatement(selectSql + whereSql + limitSql);
 			rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				questionList.add(row2entity(rs));
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -67,6 +73,7 @@ public class QuestionDaoImpl implements QuestionDao {
 	private static Question row2entity(ResultSet rs) throws SQLException {
 		Question question = new Question();
 		question.setQ_id(rs.getInt("q_id"));
+		question.setT_id(rs.getInt("t_id"));
 		question.setQ_content(rs.getString("q_content"));
 		question.setT_id(rs.getInt("t_id"));
 		question.setQ_answer(rs.getString("q_answer"));

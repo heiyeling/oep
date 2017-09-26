@@ -1,12 +1,17 @@
 package com.zr.service.impl;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.zr.dao.ExamDao;
+import com.zr.dao.TypeDao;
 import com.zr.dao.impl.ExamDaoImpl;
+import com.zr.dao.impl.TypeDaoImpl;
+import com.zr.dao.qktemp.QuestionDao;
+import com.zr.dao.qktemp.QuestionDaoImpl;
 import com.zr.model.Exam;
+import com.zr.model.Question;
+import com.zr.model.Type;
 import com.zr.service.ExamService;
 
 import net.sf.json.JSONArray;
@@ -98,10 +103,30 @@ public class ExamServiceImpl implements ExamService {
         }  
         Integer[] temp = {};   //创建空数组  
         list.toArray(temp);    //List to Array  
-//        int[] result = {};
-//        for(int i = 0;i < temp.length;i++){
-//        	result[i] = temp[i];
-//        }
         return list.toArray(temp);
-    }  
+    }
+
+	@Override
+	public JSONArray getQuestionOfExam(int currentExamId) {
+		List<Question> questionList = examDao.getQuestionOfExam(currentExamId);
+		
+		JSONArray resultJson = new JSONArray();
+		for (Question question : questionList) {
+			JSONObject qJson = new JSONObject();
+			qJson.put("id",question.getQ_id());
+			qJson.put("typeId", question.getT_id());
+			TypeDao tDao = new TypeDaoImpl();
+			Type type = tDao.getTypeById(question.getT_id());
+			qJson.put("typeName", type.getT_name());
+			qJson.put("content", question.getQ_content());
+			qJson.put("answer", question.getQ_answer());
+			resultJson.add(qJson);
+		}
+		return resultJson;
+	}
+
+	@Override
+	public boolean removeQuestionOfExamByIds(int examId, int[] ids) {
+		return examDao.removeQuestionOfExam(examId,ids);
+	}  
 }

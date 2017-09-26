@@ -2,6 +2,7 @@ package com.zr.service;
 
 import com.zr.model.Exam;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public interface ExamService {
@@ -46,4 +47,19 @@ public interface ExamService {
 	 * @return
 	 */
 	public boolean setExamQuestion(int currentExamId, int[] questionIds, int score);
+
+	/**
+	 * 根据考试id获取该考试的全部试题,并组装成easyUI datagrid的json
+	 * @param currentExamId		考试题id
+	 * @return
+	 */
+	public JSONArray getQuestionOfExam(int currentExamId);
+
+	/**
+	 * 根据考试id和题id[]删除某考试的试题
+	 * @param examId
+	 * @param ids
+	 * @return
+	 */
+	public boolean removeQuestionOfExamByIds(int examId,int[] ids);
 }

@@ -11,13 +11,16 @@ import com.zr.service.qktemp.QuestionService;
 import com.zr.service.qktemp.QuestionServiceImpl;
 
 import net.sf.json.JSONObject;
+
 /**
  * 获取题库
+ * 
  * @author Kramer
  *
  */
-public class GetQuestionAction extends HttpServlet{
+public class GetQuestionAction extends HttpServlet {
 	QuestionService qs = new QuestionServiceImpl();
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doPost(req, resp);
@@ -25,11 +28,13 @@ public class GetQuestionAction extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		int typeId = Integer.valueOf(req.getParameter("questionTypeId"));
-		int currentPage = Integer.valueOf(req.getParameter("page"));
+		int typeId = -1;
+		if(!"".equals(req.getParameter("questionTypeId")))
+			typeId = Integer.parseInt(req.getParameter("questionTypeId"));
+		int currentPage = Integer.parseInt(req.getParameter("page"));
 		int pageSize = Integer.valueOf(req.getParameter("rows"));
 		String key = req.getParameter("key");
-		JSONObject jsonQuestion = qs.getAllQuestionJsonByTypeIdAndKey(currentPage,pageSize,typeId,key);
+		JSONObject jsonQuestion = qs.getAllQuestionJsonByTypeIdAndKey(currentPage, pageSize, typeId, key);
 		resp.setCharacterEncoding("utf-8");
 		resp.getWriter().write(jsonQuestion.toString());
 	}

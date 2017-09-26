@@ -3,21 +3,24 @@ package com.zr.action.ems.examQuestion;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.zr.service.ExamService;
 import com.zr.service.impl.ExamServiceImpl;
+import com.zr.utils.FormatUtil;
 
 import net.sf.json.JSONObject;
 /**
- * 获取考试基本信息
+ * 删除考试某些考题
  * @author Kramer
  *
  */
-public class GetExamBaseInfoAction extends HttpServlet {
+public class RemoveQuestionOfExamAction extends HttpServlet{
 	ExamService es = new ExamServiceImpl();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doPost(req, resp);
@@ -25,15 +28,15 @@ public class GetExamBaseInfoAction extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		/**
-		 * 调试使用，记得要改！！！！！！
-		 * 
-		 */
+		req.setCharacterEncoding("utf-8");
 		int currentExamId = (int)req.getSession().getAttribute("currentExamId");
-//		int currentExamId = 1;
-		req.getSession().setAttribute("currentExamId", currentExamId);
-		JSONObject exam = es.getExamById(currentExamId);
+		String[] idsString = req.getParameterValues("ids[]");
+		int[] ids = FormatUtil.StringArray2IntArray(idsString);
+		boolean result = es.removeQuestionOfExamByIds(currentExamId,ids);
+		
 		resp.setCharacterEncoding("utf-8");
-		resp.getWriter().write(exam.toString());
+		JSONObject json = new JSONObject();
+		json.put("result", result);
+		resp.getWriter().write(json.toString());
 	}
 }

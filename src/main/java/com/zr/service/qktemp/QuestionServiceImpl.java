@@ -3,6 +3,8 @@ package com.zr.service.qktemp;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.zr.dao.TypeDao;
+import com.zr.dao.impl.TypeDaoImpl;
 import com.zr.dao.qktemp.QuestionDao;
 import com.zr.dao.qktemp.QuestionDaoImpl;
 import com.zr.model.Question;
@@ -29,6 +31,10 @@ public class QuestionServiceImpl implements QuestionService {
 		for(Question qq:questionList){
 			JSONObject tempQuestion = new JSONObject();
 			tempQuestion.put("id", qq.getQ_id());
+			tempQuestion.put("typeId", qq.getT_id());
+			TypeDao tDao = new TypeDaoImpl();
+			Type type = tDao.getTypeById(qq.getT_id());
+			tempQuestion.put("typeName", type.getT_name());
 			tempQuestion.put("content", qq.getQ_content());
 			tempQuestion.put("answer", qq.getQ_answer());
 			rows.add(tempQuestion);

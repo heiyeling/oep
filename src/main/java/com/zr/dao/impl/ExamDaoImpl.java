@@ -5,12 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-
-import javax.sound.midi.SysexMessage;
 
 import com.zr.dao.ExamDao;
 import com.zr.model.Exam;
+import com.zr.model.Question;
 import com.zr.utils.JDBCUtil;
 
 public class ExamDaoImpl implements ExamDao {
@@ -198,13 +198,62 @@ public class ExamDaoImpl implements ExamDao {
 		StringBuffer sql = new StringBuffer();
 		sql.append("INSERT INTO exam_question (e_id,q_id,q_score) VALUES (?,?,?)");
 		try {
-			//批量查询
+			// 批量查询
 			con.setAutoCommit(false);
 			PreparedStatement ps = con.prepareStatement(sql.toString());
-			for (int i = 0; i < questionIds.length; i++) {// 100万条数据
+			for (int i = 0; i < questionIds.length; i++) {
 				ps.setInt(1, examId);
 				ps.setInt(2, questionIds[i]);
 				ps.setInt(3, score);
+				ps.addBatch();
+			}
+			ps.executeBatch();
+			con.commit();
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public List<Question> getQuestionOfExam(int examId) {
+		List<Question> questionList = new LinkedList<>();
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT question.q_id,t_id,q_content,q_answer ")
+			.append(" FROM question ")
+			.append(" INNER JOIN exam_question ")
+			.append(" ON question.q_id = exam_question.q_id ")
+			.append(" WHERE exam_question.e_id = ? ");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, examId);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				Question question = new Question();
+				question.setQ_id(rs.getInt("q_id"));
+				question.setT_id(rs.getInt("t_id"));
+				question.setQ_content(rs.getString("q_content"));
+				question.setQ_answer(rs.getString("q_answer"));
+				questionList.add(question);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return questionList;
+	}
+
+	@Override
+	public boolean removeQuestionOfExam(int examId, int[] ids) {
+		boolean result = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("DELETE FROM exam_question WHERE e_id = ? AND q_id = ?");
+		try {
+			con.setAutoCommit(false);
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			for (int i = 0; i < ids.length; i++) {
+				ps.setInt(1, examId);
+				ps.setInt(2, ids[i]);
 				ps.addBatch();
 			}
 			ps.executeBatch();

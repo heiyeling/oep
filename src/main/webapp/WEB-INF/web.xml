@@ -98,4 +98,22 @@
     <servlet-name>EMSSetQuestion</servlet-name>
     <servlet-class>com.zr.action.ems.examQuestion.SetQuestionAction</servlet-class>
   </servlet>
+  <!-- 获取某考试的考题 -->
+  <servlet-mapping>
+    <servlet-name>EMSGetQuestionOfExam</servlet-name>
+    <url-pattern>/ems/getQuestionOfExam</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EMSGetQuestionOfExam</servlet-name>
+    <servlet-class>com.zr.action.ems.examQuestion.GetQuestionOfExamAction</servlet-class>
+  </servlet>
+  <!-- 删除某考试的考题 -->
+  <servlet-mapping>
+    <servlet-name>EMSRemoveQuestionOfExam</servlet-name>
+    <url-pattern>/ems/removeQuestionOfExam</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>EMSRemoveQuestionOfExam</servlet-name>
+    <servlet-class>com.zr.action.ems.examQuestion.RemoveQuestionOfExamAction</servlet-class>
+  </servlet>
 </web-app>
