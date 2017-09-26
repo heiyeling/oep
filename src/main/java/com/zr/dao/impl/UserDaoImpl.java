@@ -12,7 +12,9 @@ import com.zr.model.User;
 import com.zr.utils.JDBCUtil;
 
 public class UserDaoImpl implements UserDao{
-
+	/**
+	 * 用户查询
+	 */
 	@Override
 	public int SelectUserInfoByUserkey(int start, int pageSize, String userkey, List<User> userlist) {
 		int count = 0;//查询的总行数
@@ -32,13 +34,12 @@ public class UserDaoImpl implements UserDao{
 			
 			if(rs.next()){
 				 count = rs.getInt("COUNT(u_id)");
-			
-				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		StringBuffer sql1 = new StringBuffer("");
 		sql1.append("select `user`.u_id,`user`.u_name,`user`.u_telephone,`user`.u_email,`user`.u_registertime  ");
 		sql1.append("FROM `user` ");
@@ -68,5 +69,75 @@ public class UserDaoImpl implements UserDao{
 		}
 		return count;
 	}
+	
+	/**
+	 * 删除用户
+	 */
+	public int RemoveUserByUid(List ids) {
+		int j = 0;
+		List ls = new ArrayList();
+		//先删除用户的外键关联信息
+		StringBuffer sql = new StringBuffer("");
+		sql.append("DELETE from scoreofuser WHERE u_id = ?");
+		Connection con = JDBCUtil.getConnection();
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			for (Object i : ids) {
+				String i1= (String) i;
+				int i2 = Integer.parseInt(i1);
+				ps.setInt(1, i2);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//删除用户信息
+		StringBuffer sql1 = new StringBuffer("");
+		sql1.append("DELETE from `user` WHERE u_id = ? ");
+		Connection con1 = JDBCUtil.getConnection();
+		try {
+			PreparedStatement ps = con1.prepareStatement(sql1.toString());
+			for (Object i : ids) {
+				String i1= (String) i;
+				int i2 = Integer.parseInt(i1);
+				ps.setInt(1, i2);
+				j = ps.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return j;
+	}
+	
+	/**
+	 * 编辑用户
+	 */
+	public int editUser(User user){
+		int i=0 ;
+		StringBuffer sql = new StringBuffer("");
+		sql.append("UPDATE `user`");
+		sql.append("SET u_name = ? ,u_telephone=? , u_email = ? ,  u_registertime = ? ");
+		sql.append("WHERE u_id =? ");
+		Connection con = JDBCUtil.getConnection();
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+				ps.setString(1, user.getU_name());
+				ps.setString(2, user.getU_telephone());
+				ps.setString(3, user.getU_email());
+				ps.setString(4, user.getU_registertime());
+				ps.setInt(5, user.getU_id());
+				i = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return i;
+	}
+	
 			
 }

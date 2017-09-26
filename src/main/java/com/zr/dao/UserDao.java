@@ -13,5 +13,17 @@ public interface UserDao {
 	 * @return
 	 */
 	public int SelectUserInfoByUserkey(int start,int pageSize,String userkey,List<User> userlist);
-
+	
+	/**
+	 * 删除用户信息
+	 * @param ids
+	 * @return
+	 */
+	 
+	public int RemoveUserByUid(List ids);
+	/**
+	 * 编辑用户信息
+	 * @param user
+	 */
+	public int editUser(User user);
 }

@@ -6,14 +6,16 @@ import java.util.List;
 import com.zr.dao.UserDao;
 import com.zr.dao.impl.UserDaoImpl;
 import com.zr.model.User;
-import com.zr.service.GetUserInfoService;
+import com.zr.service.UserService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class GetUserInfoServiceImpl implements GetUserInfoService{
+public class UserServiceImpl implements UserService{
 	UserDao udao = new UserDaoImpl();
-	;
+	/**
+	 * 获取用户信息
+	 */
 	@Override
 	public JSONObject getUserInfo(int page, int pageSize, String userkey) {
 		JSONObject json = new JSONObject();
@@ -35,5 +37,23 @@ public class GetUserInfoServiceImpl implements GetUserInfoService{
 		}
 		json.put("rows", jsonArray);
 		return json;
+	}
+	
+	/**
+	 * 删除用户
+	 */
+	@Override
+	public int RemoveUserByUid(List ids) {
+		int l = udao.RemoveUserByUid(ids);
+		return l;
+	}
+	
+	/**
+	 * 编辑用户
+	 */
+	@Override
+	public int editUser(User user) {
+		int i =udao.editUser(user);
+		return i;
 	}
 }

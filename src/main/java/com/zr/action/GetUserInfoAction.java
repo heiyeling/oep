@@ -11,14 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.bag.SynchronizedSortedBag;
 
 import com.zr.model.User;
-import com.zr.service.GetUserInfoService;
-import com.zr.service.impl.GetUserInfoServiceImpl;
+import com.zr.service.UserService;
+import com.zr.service.impl.UserServiceImpl;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
+/**
+ * leiwei
+ * 根据关键字查询用户信息
+ * @author Administrator
+ *
+ */
 public class GetUserInfoAction extends HttpServlet{
-	GetUserInfoService gs = new GetUserInfoServiceImpl();
+	UserService gs = new UserServiceImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -28,12 +33,13 @@ public class GetUserInfoAction extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		//设置编码
 		req.setCharacterEncoding("utf-8");
-		
 		//获取参数
 		String userkey = req.getParameter("userkey");//搜索关键词
 		int page = Integer.valueOf(req.getParameter("page"));//当前页码
 		int pageSize = Integer.valueOf(req.getParameter("rows"));//每页行数
 		JSONObject json = gs.getUserInfo(page, pageSize, userkey);
+		
+		resp.setCharacterEncoding("utf-8");
 		resp.getWriter().write(json.toString());
 	}
 
