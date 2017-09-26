@@ -4,8 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.zr.dao.ExamDao;
+import com.zr.dao.TypeDao;
 import com.zr.dao.impl.ExamDaoImpl;
+import com.zr.dao.impl.TypeDaoImpl;
+import com.zr.dao.qktemp.QuestionDao;
+import com.zr.dao.qktemp.QuestionDaoImpl;
 import com.zr.model.Exam;
+import com.zr.model.Question;
+import com.zr.model.Type;
 import com.zr.service.ExamService;
 
 import net.sf.json.JSONArray;
@@ -43,7 +49,7 @@ public class ExamServiceImpl implements ExamService {
 	}
 
 	@Override
-	public boolean insertExam(String examName, String examStartTime, String examEndTime, int examTotal) {
+	public int insertExam(String examName, String examStartTime, String examEndTime, int examTotal) {
 		Exam exam = new Exam();
 		exam.setE_name(examName);
 		exam.setE_starttime(examStartTime);
@@ -53,4 +59,74 @@ public class ExamServiceImpl implements ExamService {
 		return examDao.insert(exam);
 	}
 
+	@Override
+	public JSONObject getExamById(int id) {
+		Exam examEntity = examDao.getExamById(id);
+		JSONObject examJson = new JSONObject();
+		examJson.put("examId", examEntity.getE_id());
+		examJson.put("examName", examEntity.getE_name());
+		int length = examEntity.getE_endtime().length();
+		examJson.put("examTime", examEntity.getE_starttime()+" - "+examEntity.getE_endtime().substring(length-8, length));
+		examJson.put("examTotal", examEntity.getE_total());
+		examJson.put("examState", examEntity.getE_state());
+		return examJson;
+	}
+
+	@Override
+	public boolean setExamQuestion(int currentExamId, int[] questionIds,int score) {
+		int[] isExistQuestionId = examDao.getExistQuestionId(currentExamId);
+		Integer[] temp = arrContrast(questionIds,isExistQuestionId);
+		int[] result = new int[temp.length];
+		for(int i = 0;i < temp.length;i++){
+			result[i] = temp[i];
+		}
+		return examDao.insertExamQuestions(currentExamId,result,score);
+	}
+	
+    /**
+     * 去除两个数组中相同的值并返回一个新的数组
+     * @param arr1
+     * @param arr2
+     * @return
+     */
+    private static Integer[] arrContrast(int[] arr1, int[] arr2){  
+        List<Integer> list = new LinkedList<Integer>();  
+        for (Integer str : arr1) {                //处理第一个数组
+            if (!list.contains(str)) {  
+                list.add(str);  
+            }  
+        }  
+        for (Integer str : arr2) {      //如果第二个数组存在和第一个数组相同的值，就删除  
+            if(list.contains(str)){  
+                list.remove(str);  
+            }  
+        }  
+        Integer[] temp = {};   //创建空数组  
+        list.toArray(temp);    //List to Array  
+        return list.toArray(temp);
+    }
+
+	@Override
+	public JSONArray getQuestionOfExam(int currentExamId) {
+		List<Question> questionList = examDao.getQuestionOfExam(currentExamId);
+		
+		JSONArray resultJson = new JSONArray();
+		for (Question question : questionList) {
+			JSONObject qJson = new JSONObject();
+			qJson.put("id",question.getQ_id());
+			qJson.put("typeId", question.getT_id());
+			TypeDao tDao = new TypeDaoImpl();
+			Type type = tDao.getTypeById(question.getT_id());
+			qJson.put("typeName", type.getT_name());
+			qJson.put("content", question.getQ_content());
+			qJson.put("answer", question.getQ_answer());
+			resultJson.add(qJson);
+		}
+		return resultJson;
+	}
+
+	@Override
+	public boolean removeQuestionOfExamByIds(int examId, int[] ids) {
+		return examDao.removeQuestionOfExam(examId,ids);
+	}  
 }

@@ -5,9 +5,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- 引入主题样式 -->
-<link href="${pageContext.request.contextPath }/statics/js//jquery-easyui-1.5.3/themes/default/easyui.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/bootstrap/easyui.css" rel="stylesheet">
 <!-- 引入图标的样式 -->
-<link href="${pageContext.request.contextPath }/statics/js//jquery-easyui-1.5.3/themes/icon.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/icon.css" rel="stylesheet">
 <!-- 先引入jquery -->
 <script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.js"></script>
 <!-- 引入easyui.js -->
@@ -65,10 +65,10 @@
 				    	if(json.result){
 				    		alert(json.msg);
 				    		$('#saveBtn').linkbutton({
-				    			text : "下一步",
-				    			onClick : function(){
-				    				
-				    			}
+				    				text : "下一步",
+				    				onClick : function(){
+				    					location.href = json.url;
+				    				}
 				    		});
 				    	}else{
 				    		alert(json.msg);

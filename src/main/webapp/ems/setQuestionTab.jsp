@@ -5,15 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- 引入主题样式 -->
-<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/gray/easyui.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/bootstrap/easyui.css" rel="stylesheet">
 <!-- 引入图标的样式 -->
 <link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/icon.css" rel="stylesheet">
 <!-- 先引入jquery -->
 <script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.js"></script>
 <!-- 引入easyui.js -->
 <script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
-<!-- 引入datagrid分类js -->
-<script type="text/javascript" src="http://www.jeasyui.com/easyui/datagrid-groupview.js"></script>
 <title>设置考题信息</title>
 </head>
 <script type="text/javascript">
@@ -31,6 +29,7 @@
 				infoSpan.eq(3).html(data.examState);
 			}
 		});
+		
 		//设置考题的table
 		$("#setQuestionType").datagrid({
 		    url:'${pageContext.request.contextPath}/ems/getQuestionType',
@@ -76,18 +75,49 @@
 					editIndex = index;
 				}
 		    },
-		    onCheckAll : function(rows){
-		    	getTypeData($(this));//设置题型选择框的内容
+		    onCheckAll : function(rows){//使所有tabs可用
+		    	var tabs = $("#tt");
+		    	tabs.tabs("select",0);
+	    		tabs.tabs("enableTab",1);
+	    		tabs.tabs("enableTab",2);
+	    		tabs.tabs("enableTab",3);
 		    },
 		    onCheck : function(index, row){//选择部分可用
-		    	getTypeData($(this));
+		    	var tabs = $("#tt");
+		    	if(index == 0){
+		    		tabs.tabs("enableTab",1);
+		    		tabs.tabs("select",1);
+		    	}
+		    	if(index == 1){
+		    		tabs.tabs("enableTab",2);
+		    		tabs.tabs("select",2);
+		    	}
+		    	if(index == 2){
+		    		tabs.tabs("enableTab",3);
+		    		tabs.tabs("select",3);
+		    	}
 		    },
 		    onUncheck : function(index, row){//取消设置某些考题
-		    	getTypeData($(this));
+		    	var tabs = $("#tt");
+	    		tabs.tabs("select",0);
+		    	if(index == 0){
+		    		tabs.tabs("disableTab",1);
+		    	}
+		    	if(index == 1){
+		    		tabs.tabs("disableTab",2);
+		    	}
+		    	if(index == 2){
+		    		tabs.tabs("disableTab",3);
+		    	}
 		    },
 		    onUncheckAll : function(rows){//取消设置全部考题
-		    	getTypeData($(this));
+		    	var tabs = $("#tt");
+	    		tabs.tabs("select",0);
+	    		tabs.tabs("disableTab",1);
+	    		tabs.tabs("disableTab",2);
+	    		tabs.tabs("disableTab",3);
 		    }
+		    
 		});
 		//editCell方法
 		$.extend($.fn.datagrid.methods, {
@@ -127,51 +157,43 @@
 			}
 		};
 		
-		//设置题型选择框的内容
-		function getTypeData(obj){
-	    	var rows = $(obj).datagrid("getChecked");
-	    	var types = [];
-	    	for(var i = 0;i < rows.length;i++){
-	    		var type = {
-			    	typeId : rows[i].questionTypeId,
-			    	typeName : rows[i].questionTypeName
-		    	};
-	    		types[i] = type;
-	    	}
-	    	$("#selectType").combobox({
-				data : types
-			});
-		};
+		$("#tt").tabs({
+			fit : true
+		});
+		//禁用选项卡
+		/*
+		$("#tt").tabs("disableTab",1);
+		$("#tt").tabs("disableTab",2);
+		$("#tt").tabs("disableTab",3);
+		*/
 		//已选择的选择题
-		$("#selectedQuestions").datagrid({
-			title : "已选题库",
-			url : '${pageContext.request.contextPath}/ems/getQuestionOfExam',
-			height : 300,
+		$("#singleChioceTB1").datagrid({
+			height : 200,
+			pageNumber : 1,
+			pageSize : 10,
+			pagination : true,
+			pageList : [5,10,20,30,40,50],
+			rownumbers : true,
+			fitColumns : true,
 		    columns:[[    
 				{field:'ck',checkbox:true,align:'center'},    
-				{field:'id',title:'编号',width:25,align:'center'},    
-				{field:'typeId',title:'题型编号',width:50,align:'center'},
-				{field:'typeName',title:'题型',width:50,align:'center'},
+				{field:'id',title:'id',width:20,align:'center'},    
 				{field:'content',title:'内容',width:200,align:'center'},    
-				{field:'answer',title:'答案',width:50,align:'center'},
+				{field:'answer',title:'答案',width:50,align:'center'},    
 			]],
-            collapsible:true,
-            rownumbers:true,
-            fitColumns:true,
-            view : groupview,
-            groupField:'typeName',
-            groupFormatter:function(value,rows){
-                return value + ' - ' + rows.length + ' Item(s)';
-            },
-			toolbar : [{
+			toolbar:"#singleChoiceTB1header",
+		});
+		$("#singleChioceTB1").datagrid("getPager").pagination({
+            buttons:[{
             	text:'保存',
                 iconCls:'icon-save',
                 //设置题
                 handler:function(){
-                 	var rows = $("#setQuestionType").datagrid("getRows");
+                	var rows = $("#setQuestionType").datagrid("getRows");
+                	var index = $('#tt').tabs('getTabIndex',$("#tt").tabs("getSelected"));
                 	var score = rows[index-1].questionScore;
                 	var questionId = [];
-                	var rows = $("#selectedQuestions").datagrid("getData").rows;
+                	var rows = $("#singleChioceTB1").datagrid("getData").rows;
                 	for(var i = 0;i < rows.length;i++){
                 		questionId[i] = rows[i].id;	
                 	}
@@ -187,50 +209,21 @@
                 			alert(json);
                 		}
                 	});
-                }},"-",{
-				text:'删除',
+                }
+            },{
+            	text:'删除',
                 iconCls:'icon-remove',
                 handler:function(){	
-                    var rows = $("#selectedQuestions").datagrid("getSelections");
-                    var ids = [];
-                    for(var i = 0;i < rows.length;i++){
-                    	ids[i] = rows[i].id;
-                    }
-                    $.ajax({
-                    	url : '${pageContext.request.contextPath}/ems/removeQuestionOfExam',
-                    	type : 'post',
-                    	data : {
-                    		ids : ids
-                    	},
-                    	dataType : 'json',
-                    	success : function(data){
-                    		var msg; 
-                    		if(data.result){
-                    			msg = '删除成功';
-                    		}else{
-                    			msg = '删除失败';
-                    		}
-                            $.messager.show({
-                                title:'Message',
-                                msg:msg,
-                                showType:'fade',
-                                style:{
-                                    right:'',
-                                    bottom:''
-                                }
-                            });
-                    	}
-                    });
+                    alert('remove');
                 }
-			}]
-		});
+            }]
+        }); 
 		//选择题查询面板
-		$("#questionBank").datagrid({
-			title : '题库',
+		$("#singleChioceTB2").datagrid({
 			url : "${pageContext.request.contextPath}/ems/getQuestion",
 			height : 308,
 			queryParams : {
-				questionTypeId : "",
+				questionTypeId : 1,
 				key :  $("#searchBox").val()
 			},
 			pageNumber : 1,
@@ -238,26 +231,24 @@
 			pagination : true,
 			pageList : [10,20,30,40,50],
 			rownumbers : true,
-			collapsible:true,
 			fitColumns : true,
 		    columns:[[    
 				{field:'ck',checkbox:true,align:'center'},    
-				{field:'id',title:'编号',width:25,align:'center'},
-				{field:'typeId',title:'题型编号',width:20,align:'center'},
-				{field:'typeName',title:'题型',width:50,align:'center'},
+				{field:'id',title:'id',width:20,align:'center'},    
 				{field:'content',title:'内容',width:200,align:'center'},    
 				{field:'answer',title:'答案',width:50,align:'center'},    
 			]],
 	    	toolbar : '#searchtool',
 		});
-		$("#questionBank").datagrid("getPager").pagination({
+		
+		$("#singleChioceTB2").datagrid("getPager").pagination({
             buttons : [{
-            	text : '添加',
-                iconCls : 'icon-add',
-                handler : function(){
-                	var tb2 = $("#questionBank");
+            	text:'添加',
+                iconCls:'icon-add',
+                handler:function(){
+                	var tb2 = $("#singleChioceTB2");
                 	var rows = tb2.datagrid("getSelections");//获取所有选择的行
-                	var tb1 = $("#selectedQuestions");
+                	var tb1 = $("#singleChioceTB1");
                 	var selectedQuestion = tb1.datagrid("getData").rows;//获取已选全部题
                 	for(var i = 0;i < rows.length;i++){
                 		var mark = true;
@@ -270,8 +261,6 @@
                 		if(mark){//添加行
 	                		tb1.datagrid('appendRow',{
     	            			id : rows[i].id,
-    	            			typeId : rows[i].typeId,
-    	            			typeName : rows[i].typeName,
         	        			content : rows[i].content,
             	    			answer : rows[i].answer
                 			});
@@ -281,15 +270,6 @@
                 }
             }]
         }); 
-		//类型选择框
-		$("#selectType").combobox({  
-			width : 100 ,
-			valueField : 'typeId',    
-		    textField : 'typeName',
-		    editable : false,
-		    panelHeight : 120,
-		    value : '请选择题型'
-		});
 		//搜索输入框
 		$("#searchBox").textbox({
 			width : 200
@@ -298,20 +278,18 @@
 		$("#searchBtn").linkbutton({
 			iconCls : "icon-search",
 			onClick : function(){
-				var questionTypeId = $("#selectType").combobox("getValue");
-				if(questionTypeId == "请选择题型")
-					return;
 				//重载表格
-				$('#questionBank').datagrid("load",{
-					questionTypeId : questionTypeId,
+				$('#singleChioceTB2').datagrid("load",{
+					questionTypeId : 1,
 					key : $("#searchBox").val()
 				});
 			}
 		});
+           
 	});
 </script>
 <body>
-  	<div class="easyui-layout" style="width:100%;height:700px;">
+  <div class="easyui-layout" style="width:100%;height:700px;">
         <div data-options="region:'north'" title="考试信息" style="height:110px">
         	<h2 style="float: right;">
         		<label>考试名:</label><span name='examInfo'></span>
@@ -326,35 +304,43 @@
 			<table id="setQuestionType" >
 			</table>
         </div>
-        <div data-options="region:'center'" style="width: 100%;">
-       		<!-- 单选题设置面板 -->
-			<div id="singleChoicePanel" title="单选题">
-				<!-- 已选面板 -->
-				<div>
-					<table id="selectedQuestions" style="width: 100%">
+        <div data-options="region:'center',title:'选题区'">
+        	<div id="tt" class="easyui-tabs" style="width:700px;height:250px">
+        		<div title="Welcome">
+	        	<h1>请先选择考题</h1>
+        		</div>
+	       		<!-- 单选题设置面板 -->
+				<div id="singleChoicePanel" title="单选题" style="padding:10px">
+					<!-- 已选面板 -->
+					<div>
+					</div>
+					<table id="singleChioceTB1">
 					</table>
-				</div>
-				<!-- 题库面板 -->
-				<div>
-					<table id="questionBank" style="width: 100%">
+					<div id="singleChoiceTB1header" style="height: 30px;">
+					   	<div style="float: left;">
+					   		<p style="margin-top: 5px;">已选题库</p>
+					   	</div>
+					</div>
+					<!-- 可选面板 -->
+					<table id="singleChioceTB2">
 					</table>
 					<!-- 搜索框 -->
-			   	 	<div id="searchtool" style="height: 30px;">
-			    		<div style="float: right;padding:2px 5px;">
-			    			<input id='selectType'/>
-			    			<input id='searchBox'/>
-			        		<a id="searchBtn">Search</a>
-			    		</div>
-			    	</div> 
+				    <div id="searchtool" style="height: 30px;">
+				    	<div style="float: left;"><p style="margin-top: 5px;">题库</p></div>
+				    	<div style="float: right;padding:2px 5px;">
+				    		<input id='searchBox'/>
+				        	<a id="searchBtn">Search</a>
+				    	</div>
+				    </div> 
+				</div>
+				<!-- 多选题设置面板 -->
+				<div id="multipleChoicePanel" title="简答题" style="padding:10px">
+				</div>
+				<!-- 主观题设置面板 -->
+				<div id="subjectiveItemPanel" title="计算题" style="padding:10px">
 				</div>
 			</div>
-			<!-- 多选题设置面板 -->
-			<div id="multipleChoicePanel" title="简答题" style="padding:10px">
-			</div>
-			<!-- 主观题设置面板 -->
-			<div id="subjectiveItemPanel" title="计算题" style="padding:10px">
-			</div>
-		</div>
-       </div>
+        </div>
+    </div>
 </body>
 </html>
