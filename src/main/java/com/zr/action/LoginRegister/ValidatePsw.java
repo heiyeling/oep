@@ -1,4 +1,4 @@
-package com.zr.action;
+package com.zr.action.LoginRegister;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,13 +1,15 @@
-package com.zr.action;
+package com.zr.action.LoginRegister;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.zr.dao.UserDao_hwx;
+import com.zr.dao.impl.UserDaoImpl_hwx;
 
 /**
  * @author VerSion
@@ -15,7 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings("serial")
 public class RegisterAction extends HttpServlet {
-
+	UserDao_hwx user = new UserDaoImpl_hwx();
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -24,27 +27,24 @@ public class RegisterAction extends HttpServlet {
 	@SuppressWarnings("unused")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
 		String userName = req.getParameter("userName");
 		String password = req.getParameter("password");
 		String conPassword = req.getParameter("conPassword");
 		String email = req.getParameter("email");
 		String telephone = req.getParameter("telephone");
-		List<String> errors = new ArrayList<String>(); // 装载错误信息
+		
+		
+		
+		
+		boolean res = user.UserRegister(userName, password, email, telephone);
+		
+		resp.setCharacterEncoding("utf8");
+		PrintWriter pw = resp.getWriter();
+		pw.write(Boolean.toString(res));
 }
 	}
 
-//	public boolean isValidPassword(String password, String conPassword) {
-//		return password == null || conPassword == null || !password.equals(conPassword);
-//	}
-//
-//	public boolean isValidEmail(String email) {
-//		boolean flag = false;
-//		if (email == null || "".equals(email)) {
-//			flag = false;
-//		} else {
-//			flag = email.matches("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$");
-//		}
-//		return flag;
-//	}
 
 
