@@ -26,7 +26,8 @@
 					<li><a href="#qexam" data-toggle="tab">考试查询</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">退出</a></li>
+					<li><a href="${pageContext.request.contextPath}/llj/mainadmin.jsp">返回</a></li>
+					<li><a href="${pageContext.request.contextPath}/hwx/Login.jsp">退出</a></li>
 				</ul>
 			</div>
 		</div>
