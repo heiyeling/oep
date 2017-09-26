@@ -1,4 +1,4 @@
-package com.zr.action;
+package com.zr.action.LoginRegister;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,11 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zr.dao.ManagerDao_hwx;
+import com.zr.dao.impl.ManagerDaoImpl_hwx;
+
 /**
 *@author VerSion
-*@time 2017年9月21日下午8:29:08
+*@time 2017年9月25日上午10:57:20
 */
-public class CheckEmail extends HttpServlet{
+@SuppressWarnings("serial")
+public class CheckMname extends HttpServlet{
+	ManagerDao_hwx check = new ManagerDaoImpl_hwx();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -21,19 +26,18 @@ public class CheckEmail extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String email = req.getParameter("email");
-		if ("".equals(email)) {
+		String mname = req.getParameter("mname");
+
+		if (mname.equals("")) {
 			resp.setCharacterEncoding("utf-8");
 			PrintWriter out = resp.getWriter();
-			out.print("0");
-		}else if (!(email.matches("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$"))) {
+			out.print("2");
+		}
+		if (!(check.ManagerExist(mname))) {
+			
 			resp.setCharacterEncoding("utf-8");
 			PrintWriter out = resp.getWriter();
 			out.print("1");
-		}else if (email.matches("^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)+$")) {
-			resp.setCharacterEncoding("utf-8");
-			PrintWriter out = resp.getWriter();
-			out.print("5");
 		}
 	}
 

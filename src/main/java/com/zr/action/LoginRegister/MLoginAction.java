@@ -8,17 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.zr.dao.UserDao_hwx;
-import com.zr.dao.impl.UserDaoImpl_hwx;
+import com.zr.dao.ManagerDao_hwx;
+import com.zr.dao.impl.ManagerDaoImpl_hwx;
 
 /**
 *@author VerSion
-*@time 2017年9月22日下午5:11:12
+*@time 2017年9月25日上午11:09:25
 */
 @SuppressWarnings("serial")
-public class LoginAction extends HttpServlet{
-	UserDao_hwx login = new UserDaoImpl_hwx();
-	
+public class MLoginAction extends HttpServlet{
+	ManagerDao_hwx mlogin = new ManagerDaoImpl_hwx();
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -26,11 +26,11 @@ public class LoginAction extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String userName = req.getParameter("uname");
-		String keyINpsw = req.getParameter("password");
+		String managerName = req.getParameter("mname");
+		String keyINpsw = req.getParameter("mpassword");
 		
-		String upsw = login.Getpswbyuname(userName);
-		if (keyINpsw.equals(upsw)) {
+		String mpsw = mlogin.Getpswbymname(managerName);
+		if (keyINpsw.equals(mpsw)) {
 			resp.setCharacterEncoding("utf8");
 			PrintWriter out = resp.getWriter();
 			out.print("314");
@@ -40,6 +40,5 @@ public class LoginAction extends HttpServlet{
 			out.print("365");
 		}
 	}
-	
-	
+
 }

@@ -119,7 +119,7 @@
 </script>
 
 </head>
-<body class="bg-primary">
+<body style="background-color: #7EB0DB">
 	<div class="container">
 		<div class="row">
 			<div style="margin-top: 50px; margin-left: 42%">
@@ -167,7 +167,7 @@
 				</form>
 				<br />
 				<div align="center">
-					已有账号？<a href="Login.jsp" style="color: #cc99cc">点击直接登录</a>
+					已有账号？<a href="Login.jsp" style="color: #000099">点击直接登录</a>
 				</div>
 			</div>
 		</div>

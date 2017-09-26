@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import com.zr.dao.UserDao_hwx;
 import com.zr.utils.JDBCUtil;
 
-
 /**
  * @author VerSion
  * @time 2017年9月22日上午9:53:22
@@ -44,32 +43,53 @@ public class UserDaoImpl_hwx implements UserDao_hwx {
 
 	@Override
 	public boolean UserExist(String u_uname) {
-		
+
 		boolean exist = false;
 		StringBuffer sql = new StringBuffer();
 		Connection con = JDBCUtil.getConnection();
 		sql.append("SELECT u_id FROM user WHERE u_name=? ");
 		PreparedStatement pst;
-		
+
 		try {
 			pst = con.prepareStatement(sql.toString());
 			pst.setString(1, u_uname);
 			ResultSet rs = pst.executeQuery();
 			if (rs.next()) {
 				exist = true;
-			}else {
+			} else {
 				exist = false;
 			}
-			
-			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return exist;
+
+	}
+	
+	
+
+	@Override
+	public String Getpswbyuname(String u_uname) {
+		String psw = new String();
+		StringBuffer sql = new StringBuffer();
+		Connection con = JDBCUtil.getConnection();
+		sql.append("SELECT u_password FROM user WHERE u_name=? ");
+		PreparedStatement pst;
+		
+		try {
+			pst = con.prepareStatement(sql.toString());
+			pst.setString(1, u_uname);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				psw = rs.getString("u_password");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		return exist;
-	
+		return psw;
 	}
 
 }
