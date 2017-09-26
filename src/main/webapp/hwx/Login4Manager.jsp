@@ -46,20 +46,29 @@
 				data : {
 					mname : $("#uname").val(),
 					mpassword : $("#upsw").val(),
+					idtfcode : $("#idtfcode").val(),
 				},
 				dataType : "json",
 				success : function(data) {
 					if (data == 314) {
 						alert("登录成功！")
 						location.href = "managermain.jsp"
-					} else if(data == 365){
+					}else if(data == 365){
 						alert("登录失败！\n错误代码:365\n可能的原因是用户名和密码不匹配")
+					}else if (data == 391) {
+						alert("登录失败！\n错误代码:391\n可能的原因是:验证码为空")
+					}else if (data == 392) {
+						alert("登录失败！\n错误代码:392\n可能的原因是:验证码不正确")
 					}
 
 				},
 			})
 		});
 
+		
+		$("#codeimg").click(function() {
+			document.getElementById('codeimg').src = "${pageContext.request.contextPath}/hwx/crtcode?"+Math.random();
+		});
 	});
 </script>
 </head>
@@ -89,6 +98,13 @@
 						<label>密码</label> <input type="password" class="form-control"
 							id="upsw" placeholder="请输入用户密码" value="${cookie.tpsw.value}">
 						<div id="psw-nullerror" style="color: red; display: none">密码不能为空！</div>
+					</div>
+					
+					<div class="form-group" id="Idtfcode">
+						<label>验证码</label> <input type="text" 
+							id="idtfcode" placeholder="请输入图片中的数字"/>
+						<img id="codeimg" src="${pageContext.request.contextPath}/hwx/crtcode" style="width: 80px;height: 30px"/>
+						
 					</div>
 					<div class="checkbox">
 						<label> <input type="checkbox" id="rme">记住我
