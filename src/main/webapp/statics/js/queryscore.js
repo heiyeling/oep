@@ -8,6 +8,16 @@
 	var flag2;
 	var size=3;
 	$(function() {
+		$("#qstu").keydown(function(event){ 
+			if(event.keyCode==13){ 
+			$("#query1").click(); 
+			} 
+		})
+		$("#qexam").keydown(function(event){ 
+			if(event.keyCode==13){ 
+			$("#query2").click(); 
+			} 
+		})
 		function fenye(){
 			$("#b").append("<button class='bs btn btn-default' id='first'>" + "首页" + "</button>");
 			$("#b").append("<button class='bs btn btn-default' id='pre'>" + "上一页" + "</button>");
