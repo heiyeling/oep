@@ -6,6 +6,14 @@ public class User {
 	private String u_password;
 	private String u_email;
 	private String u_telephone;
+	private String u_registertime;
+	
+	public String getU_registertime() {
+		return u_registertime;
+	}
+	public void setU_registertime(String u_registertime) {
+		this.u_registertime = u_registertime;
+	}
 	public int getU_id() {
 		return u_id;
 	}
