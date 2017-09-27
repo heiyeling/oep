@@ -12,7 +12,7 @@
 <!-- 引入bootstrap -->
 <link type="text/css" href="${pageContext.request.contextPath}/statics/js/bootstrap.min.css" rel="stylesheet">
 <script type="text/javascript" src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/statics/js/queryscore.js"></script>
+
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -26,7 +26,8 @@
 					<li><a href="#qexam" data-toggle="tab">考试查询</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">退出</a></li>
+					<li><a href="${pageContext.request.contextPath}/llj/mainadmin.jsp">返回</a></li>
+					<li><a href="${pageContext.request.contextPath}/hwx/Login.jsp">退出</a></li>
 				</ul>
 			</div>
 		</div>
@@ -39,16 +40,25 @@
 					<h1>学生成绩查询</h1>
 				</div>
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-5">
 						<div class="input-group">
 							<input id="in1" type="text" class="form-control"
 								placeholder="输入学生姓名"> <span class="input-group-btn">
 								<button id="query1" class="btn btn-default" type="button">查询</button>
 							</span>
 						</div>
+						<div id="d1" class="alert alert-info">未查询到此人！请重新查询</div>
+						<table id="a" class="table table-striped">
+		
+						</table>
+						<div id="b"></div>
+					</div>
+					<div class="col-md-1"></div>
+					<div id="chdiv1" class="col-md-5">
+						
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
 				<div class="col-md-3">
 					<div id="d1" class="alert alert-info">未查询到此人！请重新查询</div>
 				</div>
@@ -60,7 +70,7 @@
 				</table>
 				<div id="b"></div>
 				</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<div class="tab-pane fade" id="qexam">
@@ -69,16 +79,25 @@
 					<h1>考试查询</h1>
 				</div>
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-5">
 						<div class="input-group">
 							<input id="in2" type="text" class="form-control"
 								placeholder="输入考试名称"> <span class="input-group-btn">
 								<button id="query2" class="btn btn-default" type="button">查询</button>
 							</span>
 						</div>
+						<div id="d2" class="alert alert-info">未查询到此考试！请重新查询</div>
+						<table id="c" class="table table-striped">
+		
+						</table>
+						<div id="d"></div>
+					</div>
+					<div class="col-md-1"></div>
+					<div id="chdiv2" class="col-md-5">
+					
 					</div>
 				</div>
-				<div class="row">
+				<!-- <div class="row">
 				<div class="col-md-3">
 					<div id="d2" class="alert alert-info">未查询到此考试！请重新查询</div>
 				</div>
@@ -90,9 +109,10 @@
 				</table>
 				<div id="d"></div>
 				</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 </body>
+<script src="${pageContext.request.contextPath}/statics/js/queryscore.js"></script>
 </html>

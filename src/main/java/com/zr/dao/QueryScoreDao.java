@@ -24,6 +24,20 @@ public interface QueryScoreDao {
 	public List<Scoreofuser> getmsg2(String ename, int page, int pageSize);
 	
 	/**
+	 * 查询用户的所有成绩
+	 * @param uname
+	 * @return
+	 */
+	public List<Scoreofuser> getScoreByU(String uname);
+	
+	/**
+	 * 查询某考试的所有成绩
+	 * @param ename
+	 * @return
+	 */
+	public List<Scoreofuser> getScoreByE(String ename);
+	
+	/**
 	 * 通过用户姓名获取用户ID
 	 * @param uname
 	 * @return
