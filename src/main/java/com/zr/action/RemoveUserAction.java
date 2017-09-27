@@ -17,7 +17,7 @@ import com.zr.service.impl.UserServiceImpl_leiwei;
 import net.sf.json.JSONObject;
 /**
  * leiwei
- * 删除用户记录 
+ * 删除用户记录  
  * @author Administrator
  *
  */

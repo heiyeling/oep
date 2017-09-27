@@ -14,7 +14,7 @@ import net.sf.json.JSONObject;
 public class UserServiceImpl_leiwei implements UserService_leiwei{
 	UserDao_leiwei udao = new UserDaoImpl_leiwei();
 	/**
-	 * 获取用户信息
+	 * 获取用户信息 
 	 */
 	@Override
 	public JSONObject getUserInfo(int page, int pageSize, String userkey) {

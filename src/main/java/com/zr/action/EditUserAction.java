@@ -15,7 +15,7 @@ import com.zr.service.impl.UserServiceImpl_leiwei;
 import net.sf.json.JSONObject;
 /**
  * leiwei
- * 编辑用户信息 
+ * 编辑用户信息  
  * @author Administrator
  *
  */
@@ -24,7 +24,7 @@ public class EditUserAction extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
-	}
+	}  
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

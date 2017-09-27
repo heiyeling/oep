@@ -8,7 +8,7 @@ import net.sf.json.JSONObject;
 
 public interface UserService_leiwei {
 	/**
-	 * 获得用户信息
+	 * 获得用户信息 
 	 * 
 	 * @param start
 	 * @param pageSize

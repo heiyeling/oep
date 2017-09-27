@@ -6,7 +6,7 @@ import com.zr.model.User;
 
 public interface UserDao_leiwei {
 	/**
-	 * 根据用户关键字分页查询用户信息,获得总行数count 
+	 * 根据用户关键字分页查询用户信息,获得总行数count  
 	 * @param start
 	 * @param pageSize
 	 * @param userkey

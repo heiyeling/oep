@@ -14,7 +14,7 @@ import com.zr.utils.JDBCUtil;
 public class UserDaoImpl_leiwei implements UserDao_leiwei{
 	/**
 	 * 用户查询
-	 */
+	 */ 
 	@Override
 	public int SelectUserInfoByUserkey(int start, int pageSize, String userkey, List<User> userlist) {
 		int count = 0;//查询的总行数
