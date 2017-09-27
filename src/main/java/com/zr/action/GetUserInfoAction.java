@@ -11,19 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.bag.SynchronizedSortedBag;
 
 import com.zr.model.User;
-import com.zr.service.UserService;
-import com.zr.service.impl.UserServiceImpl;
+import com.zr.service.UserService_leiwei;
+import com.zr.service.impl.UserServiceImpl_leiwei;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 /**
  * leiwei
- * 根据关键字查询用户信息
+ * 根据关键字查询用户信息 
  * @author Administrator
  *
  */
 public class GetUserInfoAction extends HttpServlet{
-	UserService gs = new UserServiceImpl();
+	UserService_leiwei gs = new UserServiceImpl_leiwei();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);

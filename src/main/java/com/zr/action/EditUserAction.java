@@ -9,18 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.zr.model.User;
-import com.zr.service.UserService;
-import com.zr.service.impl.UserServiceImpl;
+import com.zr.service.UserService_leiwei;
+import com.zr.service.impl.UserServiceImpl_leiwei;
 
 import net.sf.json.JSONObject;
 /**
  * leiwei
- * 编辑用户信息
+ * 编辑用户信息 
  * @author Administrator
  *
  */
 public class EditUserAction extends HttpServlet{
-	UserService es = new UserServiceImpl();
+	UserService_leiwei es = new UserServiceImpl_leiwei();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
