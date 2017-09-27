@@ -1,13 +1,15 @@
 	var page=1;
 	var page2=1;
-	var cur;
-	var cur2;
+	var cur=1;
+	var cur2=1;
 	var totalpage;
 	var totalpage2;
 	var flag;
 	var flag2;
-	var size=3;
+	var size=1;
+	var showpage=5;
 	$(function() {
+		//绑定回车事件
 		$("#qstu").keydown(function(event){ 
 			if(event.keyCode==13){ 
 			$("#query1").click(); 
@@ -18,135 +20,109 @@
 			$("#query2").click(); 
 			} 
 		})
-		function fenye(){
+		//分页功能
+		function fenye3(){
 			$("#b").append("<button class='bs btn btn-default' id='first'>" + "首页" + "</button>");
 			$("#b").append("<button class='bs btn btn-default' id='pre'>" + "上一页" + "</button>");
-			if(cur==1){
-				if(totalpage==2){
-					$("#b").append("<button class='bs btn btn-default'  disabled='disabled'>" + 1 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
-				}else{
-					$("#b").append("<button class='bs btn btn-default'  disabled='disabled'>" + 1 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 3 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
-				}
-			}else if(cur==2){
-				if(totalpage==2){
-					$("#b").append("<button class='bs btn btn-default'>" + 1 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next' disabled='disabled'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last' disabled='disabled'>" + "尾页" + "</button>");
-				}else{
-					$("#b").append("<button class='bs btn btn-default'>" + 1 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 3 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
-				}	
-			}else if(cur==3){
-				if(totalpage==3){
-					$("#b").append("<button class='bs btn btn-default'>" + 1 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 3 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next' disabled='disabled'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last' disabled='disabled'>" + "尾页" + "</button>");
-				}else{
-					$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 3 + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + 4 + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
+			if(showpage>totalpage){
+				for (var i = 1; i < totalpage+1; i++) {
+					if (cur==i) {
+						$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
+					}else{
+						$("#b").append("<button class='bs btn btn-default'>" + i + "</button>");
+					}
 				}
 			}else{
-				if(cur==totalpage){
-					$("#b").append("<button class='bs btn btn-default'>" + (cur-2) + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + (cur-1) + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next' disabled='disabled'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last' disabled='disabled'>" + "尾页" + "</button>");
+				if (cur<=Math.round(showpage/2)) {
+					for (var j = 1; j < showpage+1; j++) {
+						if (cur==j) {
+							$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
+						}else{
+							$("#b").append("<button class='bs btn btn-default'>" + j + "</button>");
+						}
+					}
+				}else if(cur>(totalpage-Math.round(showpage/2))){
+					for (var k = totalpage-showpage+1; k < totalpage+1; k++) {
+						if (cur==k) {
+							$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
+						}else{
+							$("#b").append("<button class='bs btn btn-default'>" + k + "</button>");
+						}
+					}
 				}else{
-					$("#b").append("<button class='bs btn btn-default'>" + (cur-1) + "</button>");
-					$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
-					$("#b").append("<button class='bs btn btn-default'>" + (cur+1) + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
+					for (var l = cur-parseInt(showpage/2); l < cur+parseInt(showpage/2)+1; l++) {
+						if (cur==l) {
+							$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + cur + "</button>");
+						}else{
+							$("#b").append("<button class='bs btn btn-default'>" + l + "</button>");
+						}
+					}
 				}
 			}
+			$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
+			$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
 			if (cur==1) {
 				$("#first").attr("disabled",true);
 				$("#pre").attr("disabled",true);
 			}
+			if(cur==totalpage){
+				$("#last").attr("disabled",true);
+				$("#next").attr("disabled",true);
+			}
 		}
-		function fenye2(){
+		function fenye4(){
 			$("#d").append("<button class='bs2 btn btn-default' id='first2'>" + "首页" + "</button>");
 			$("#d").append("<button class='bs2 btn btn-default' id='pre2'>" + "上一页" + "</button>");
-			if(cur2==1){
-				if(totalpage2==2){
-					$("#d").append("<button class='bs2 btn btn-default'  disabled='disabled'>" + 1 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
-				}else{
-					$("#d").append("<button class='bs2 btn btn-default'  disabled='disabled'>" + 1 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 3 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
-				}
-			}else if(cur2==2){
-				if(totalpage2==2){
-					$("#d").append("<button class='bs2 btn btn-default'>" + 1 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2' disabled='disabled'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2' disabled='disabled'>" + "尾页" + "</button>");
-				}else{
-					$("#d").append("<button class='bs2 btn btn-default'>" + 1 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 3 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
-				}	
-			}else if(cur2==3){
-				if(totalpage2==3){
-					$("#d").append("<button class='bs2 btn btn-default'>" + 1 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 3 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2' disabled='disabled'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2' disabled='disabled'>" + "尾页" + "</button>");
-				}else{
-					$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 3 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + 4 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
+			if(showpage>totalpage2){
+				for (var i = 1; i < totalpage2+1; i++) {
+					if (cur2==i) {
+						$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
+					}else{
+						$("#d").append("<button class='bs2 btn btn-default'>" + i + "</button>");
+					}
 				}
 			}else{
-				if(cur2==totalpage2){
-					$("#d").append("<button class='bs2 btn btn-default'>" + (cur2-2) + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + (cur2-1) + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2' disabled='disabled'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2' disabled='disabled'>" + "尾页" + "</button>");
+				if (cur2<=Math.round(showpage/2)) {
+					for (var j = 1; j < showpage+1; j++) {
+						if (cur2==j) {
+							$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
+						}else{
+							$("#d").append("<button class='bs2 btn btn-default'>" + j + "</button>");
+						}
+					}
+				}else if(cur2>(totalpage2-Math.round(showpage/2))){
+					for (var k = totalpage2-showpage+1; k < totalpage2+1; k++) {
+						if (cur2==k) {
+							$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
+						}else{
+							$("#d").append("<button class='bs2 btn btn-default'>" + k + "</button>");
+						}
+					}
 				}else{
-					$("#d").append("<button class='bs2 btn btn-default'>" + (cur2-1) + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default'>" + (cur2+1) + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
+					for (var l = cur2-parseInt(showpage/2); l < cur2+parseInt(showpage/2)+1; l++) {
+						if (cur2==l) {
+							$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + cur2 + "</button>");
+						}else{
+							$("#d").append("<button class='bs2 btn btn-default'>" + l + "</button>");
+						}
+					}
 				}
 			}
+			$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
+			$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
 			if (cur2==1) {
 				$("#first2").attr("disabled",true);
 				$("#pre2").attr("disabled",true);
+			}
+			if(cur2==totalpage2){
+				$("#last2").attr("disabled",true);
+				$("#next2").attr("disabled",true);
 			}
 		}
 		$('#d1').hide();
 		$('#d2').hide();
 		$('#myTab li:eq(0) a').tab('show');
+		//查询一个学生所有成绩
 		$('#query1').click(function() {
 			$("#a").empty();
 			$("#b").empty();
@@ -171,24 +147,7 @@
 					totalpage = data.total;
 					var stus = data.students;
 					var all1 = data.allscore;
-					$("#b").append("<button class='bs btn btn-default' id='first' disabled='disabled'>" + "首页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='pre' disabled='disabled'>" + "上一页" + "</button>");
-					if(totalpage==1){
-						$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 1 + "</button>");
-					}else if(totalpage==2){
-						$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 1 + "</button>");
-						$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-					}else{
-						$("#b").append("<button class='bs btn btn-default' disabled='disabled'>" + 1 + "</button>");
-						$("#b").append("<button class='bs btn btn-default'>" + 2 + "</button>");
-						$("#b").append("<button class='bs btn btn-default'>" + 3 + "</button>");
-					}
-					$("#b").append("<button class='bs btn btn-default' id='next'>" + "下一页" + "</button>");
-					$("#b").append("<button class='bs btn btn-default' id='last'>" + "尾页" + "</button>");
-					if(totalpage==1){
-						$("#last").attr("disabled",true);
-						$("#next").attr("disabled",true);
-					}
+					fenye3();
 					var lab = new Array();
 					var sco = new Array();
 					$.each(all1, function(i, v) {
@@ -231,6 +190,7 @@
 				}
 			})
 		});
+		//点击分页触发
 		$('#b').on(
 				'click',
 				'.bs',
@@ -268,10 +228,11 @@
 												+ "</td><td>" + v.score
 												+ "</td></tr>")
 							})
-							fenye();
+							fenye3();
 						}
 					})
 				})
+		//查询一门考试所有学生成绩
 		$('#query2').click(function() {
 			$("#c").empty();
 			$("#d").empty();
@@ -296,24 +257,7 @@
 					totalpage2 = data.total;
 					var stus = data.students;
 					var all2 = data.allscore2;
-					$("#d").append("<button class='bs2 btn btn-default' id='first2' disabled='disabled'>" + "首页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='pre2' disabled='disabled'>" + "上一页" + "</button>");
-					if(totalpage2==1){
-						$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 1 + "</button>");
-					}else if(totalpage2==2){
-						$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 1 + "</button>");
-						$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-					}else{
-						$("#d").append("<button class='bs2 btn btn-default' disabled='disabled'>" + 1 + "</button>");
-						$("#d").append("<button class='bs2 btn btn-default'>" + 2 + "</button>");
-						$("#d").append("<button class='bs2 btn btn-default'>" + 3 + "</button>");
-					}
-					$("#d").append("<button class='bs2 btn btn-default' id='next2'>" + "下一页" + "</button>");
-					$("#d").append("<button class='bs2 btn btn-default' id='last2'>" + "尾页" + "</button>");
-					if(totalpage2==1){
-						$("#last2").attr("disabled",true);
-						$("#next2").attr("disabled",true);
-					}
+					fenye4();
 					$.each(stus, function(i, v) {
 						$("#c").append(
 								"<tr><td>" + v.ename + "</td><td>" + v.uname
@@ -353,6 +297,7 @@
 				}
 			})
 		});
+		//点击分页触发
 		$('#d').on(
 				'click',
 				'.bs2',
@@ -391,7 +336,7 @@
 												+ "</td><td>" + v.score
 												+ "</td></tr>")
 							})
-							fenye2();
+							fenye4();
 						}
 					})
 				})
