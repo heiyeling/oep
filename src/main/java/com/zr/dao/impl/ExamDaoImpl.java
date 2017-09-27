@@ -10,8 +10,12 @@ import java.util.List;
 
 import com.zr.dao.ExamDao;
 import com.zr.model.Exam;
+import com.zr.model.Exam_question;
 import com.zr.model.Question;
 import com.zr.utils.JDBCUtil;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class ExamDaoImpl implements ExamDao {
 	Connection con;
@@ -193,18 +197,19 @@ public class ExamDaoImpl implements ExamDao {
 	}
 
 	@Override
-	public boolean insertExamQuestions(int examId, int[] questionIds, int score) {
+	public boolean insertExamQuestions(List<Exam_question> eqList) {
 		boolean result = false;
 		StringBuffer sql = new StringBuffer();
-		sql.append("INSERT INTO exam_question (e_id,q_id,q_score) VALUES (?,?,?)");
+		sql.append("INSERT INTO exam_question (e_id,q_id,score) VALUES (?,?,?)");
 		try {
 			// 批量查询
 			con.setAutoCommit(false);
 			PreparedStatement ps = con.prepareStatement(sql.toString());
-			for (int i = 0; i < questionIds.length; i++) {
-				ps.setInt(1, examId);
-				ps.setInt(2, questionIds[i]);
-				ps.setInt(3, score);
+			for (int i = 0; i < eqList.size(); i++) {
+				Exam_question eq = eqList.get(i);
+				ps.setInt(1, eq.getE_id());
+				ps.setInt(2, eq.getQ_id());
+				ps.setInt(3, eq.getScore());
 				ps.addBatch();
 			}
 			ps.executeBatch();
@@ -220,16 +225,14 @@ public class ExamDaoImpl implements ExamDao {
 	public List<Question> getQuestionOfExam(int examId) {
 		List<Question> questionList = new LinkedList<>();
 		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT question.q_id,t_id,q_content,q_answer ")
-			.append(" FROM question ")
-			.append(" INNER JOIN exam_question ")
-			.append(" ON question.q_id = exam_question.q_id ")
-			.append(" WHERE exam_question.e_id = ? ");
+		sql.append(" SELECT question.q_id,t_id,q_content,q_answer ").append(" FROM question ")
+				.append(" INNER JOIN exam_question ").append(" ON question.q_id = exam_question.q_id ")
+				.append(" WHERE exam_question.e_id = ? ").append(" ORDER BY question.t_id");
 		try {
 			PreparedStatement ps = con.prepareStatement(sql.toString());
 			ps.setInt(1, examId);
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()){
+			while (rs.next()) {
 				Question question = new Question();
 				question.setQ_id(rs.getInt("q_id"));
 				question.setT_id(rs.getInt("t_id"));
@@ -259,6 +262,138 @@ public class ExamDaoImpl implements ExamDao {
 			ps.executeBatch();
 			con.commit();
 			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public int getScore(int examId, int q_id) {
+		int score = -1;
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT score FROM exam_question WHERE e_id = ? AND q_id = ?");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, examId);
+			ps.setInt(2, q_id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				score = rs.getInt("score");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return score;
+	}
+
+	@Override
+	public JSONArray getTypeInfo(int examId) {
+		JSONArray json = new JSONArray();
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT question.t_id,type.t_name,COUNT(exam_question.q_id) AS number, ")
+				.append("AVG(exam_question.score) AS score,SUM(exam_question.score) AS total ")
+				.append("FROM exam_question ").append("INNER JOIN question ON exam_question.q_id = question.q_id ")
+				.append("INNER JOIN type ON type.t_id = question.t_id ").append("WHERE exam_question.e_id = ? ")
+				.append("GROUP BY question.t_id ").append("ORDER BY question.t_id ");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			ps.setInt(1, examId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				JSONObject typeInfo = new JSONObject();
+				typeInfo.put("typeId", rs.getInt("t_id"));
+				typeInfo.put("typeName", rs.getString("t_name"));
+				typeInfo.put("questionNumber", rs.getInt("number"));
+				typeInfo.put("questionScore", rs.getInt("score"));
+				typeInfo.put("questionTotal", rs.getInt("total"));
+				json.add(typeInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	@Override
+	public boolean updateExamQuestions(List<Exam_question> eqList) {
+		boolean result = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE exam_question SET score = ? WHERE e_id = ? AND q_id = ?");
+		try {
+			// 批量更新
+			con.setAutoCommit(false);
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			for (int i = 0; i < eqList.size(); i++) {
+				Exam_question eq = eqList.get(i);
+				ps.setInt(1, eq.getScore());
+				ps.setInt(2, eq.getE_id());
+				ps.setInt(3, eq.getQ_id());
+				ps.addBatch();
+			}
+			ps.executeBatch();
+			con.commit();
+			result = true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean setExamQuestions(List<Exam_question> insertQuestionList, List<Exam_question> updateQuestionList) {
+		boolean result = false;
+		try {
+			con.setAutoCommit(false);
+			boolean result1 = this.insertExamQuestions(insertQuestionList);
+			boolean result2 = this.updateExamQuestions(updateQuestionList);
+			result = result1 & result2;
+			con.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean updateExamInfo(Exam exam) {
+		boolean result = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE exam ").append("SET e_name = ?,e_starttime=?, ")
+			.append("e_endtime=?,e_total=? ")
+			.append("WHERE e_id = ?");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			int i = 1;
+			ps.setString(i++, exam.getE_name());
+			ps.setString(i++, exam.getE_starttime());
+			ps.setString(i++, exam.getE_endtime());
+			ps.setInt(i++, exam.getE_total());
+			ps.setInt(i++, exam.getE_id());
+			if (ps.executeUpdate() > 0) {
+				result = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean issueExam(int examId) {
+		boolean result = false;
+		StringBuffer sql = new StringBuffer();
+		sql.append("UPDATE exam ").append("SET e_state = ?")
+			.append("WHERE e_id = ?");
+		try {
+			PreparedStatement ps = con.prepareStatement(sql.toString());
+			int i = 1;
+			ps.setString(i++, "true");
+			ps.setInt(i++, examId);
+			if (ps.executeUpdate() > 0) {
+				result = true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -41,12 +41,12 @@ public interface ExamService {
 
 	/**
 	 * 设置考题
-	 * @param currentExamId	考试id
-	 * @param questionIds	题目id[]
-	 * @param score			分值
+	 * @param examId	考试id
+	 * @param insertQuestions 插入试题json数据[qid,score]
+	 * @param updateQuestions 修改试题json数据[qid,score]
 	 * @return
 	 */
-	public boolean setExamQuestion(int currentExamId, int[] questionIds, int score);
+	public boolean setExamQuestion(int examId,JSONArray insertQuestions,JSONArray updateQuestions);
 
 	/**
 	 * 根据考试id获取该考试的全部试题,并组装成easyUI datagrid的json
@@ -62,4 +62,18 @@ public interface ExamService {
 	 * @return
 	 */
 	public boolean removeQuestionOfExamByIds(int examId,int[] ids);
+
+	/**
+	 * 更新考试基本信息
+	 * @param exam
+	 * @return
+	 */
+	public boolean updateExam(Exam exam);
+
+	/**
+	 * 发布考试
+	 * @param examId
+	 * @return
+	 */
+	public boolean issueExam(int examId);
 }
