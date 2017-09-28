@@ -4,13 +4,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- 引入主题样式 -->
-<link href="${pageContext.request.contextPath }/statics/themes/default/easyui.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/bootstrap/easyui.css" rel="stylesheet">
 <!-- 引入图标的样式 -->
-<link href="${pageContext.request.contextPath }/statics/themes/icon.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/themes/icon.css" rel="stylesheet">
 <!-- 先引入jquery -->
 <script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-1.9.1.js"></script>
 <!-- 引入easyui.js -->
-<script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/statics/js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
 <title>考试管理</title>
 </head>
 <script type="text/javascript">
@@ -44,7 +44,6 @@
 		$("#searchBox").textbox();
 		//搜索按钮
 		$("#searchBtn").linkbutton({
-			url : 'search',
 			iconCls : "icon-search",
 			onClick : function(){
 				//重载表格

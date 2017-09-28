@@ -1,4 +1,4 @@
-package com.zr.action;
+package com.zr.action.LoginRegister;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 *@author VerSion
 *@time 2017年9月21日下午8:29:08
 */
+@SuppressWarnings("serial")
 public class CheckEmail extends HttpServlet{
 
 	@Override
