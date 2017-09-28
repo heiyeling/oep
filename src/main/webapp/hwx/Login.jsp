@@ -94,13 +94,13 @@
 					<div class="form-group" id="U_Name">
 						<label>用户名</label> <input type="text" class="form-control"
 							id="uname" placeholder="请输入用户名" value="${cookie.tname.value}">
-						<div id="uname-nullerror" style="color: red; display: none">用户名不能为空！</div>
-						<div id="uname-existerror" style="color: red; display: none">用户名不存在！</div>
+						<div id="uname-nullerror" style="color: red; display: none" class="alert alert-danger">用户名不能为空！</div>
+						<div id="uname-existerror" style="color: red; display: none" class="alert alert-danger	">用户名不存在！</div>
 					</div>
 					<div class="form-group">
 						<label>密码</label> <input type="password" class="form-control"
 							id="upsw" placeholder="请输入用户密码" value="${cookie.tpsw.value}">
-						<div id="psw-nullerror" style="color: red; display: none">密码不能为空！</div>
+						<div id="psw-nullerror" style="color: red; display: none" class="alert alert-danger">密码不能为空！</div>
 					</div>
 					<div class="form-group" id="Idtfcode">
 						<label>验证码</label> <input type="text" 
@@ -113,7 +113,7 @@
 						<label> <input type="checkbox" id="rme">记住我
 						</label>
 					</div>
-					<button class="btn btn-danger" id="Loginbtn"
+					<button class="btn btn-success" id="Loginbtn"
 						style="margin-left: 25%">登&nbsp;录</button>
 					<a href="Register.jsp"><button class="btn btn-success"
 							id="register" style="margin-left: 100px">注&nbsp;册</button></a>

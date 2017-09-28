@@ -1,10 +1,6 @@
 package com.zr.service.qktemp;
 
-import java.util.List;
-
-import com.zr.model.Question;
-import com.zr.model.Type;
-
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public interface QuestionService {
@@ -12,7 +8,7 @@ public interface QuestionService {
 	 * 获取所有的题型
 	 * @return
 	 */
-	List<Type> getAllQuestionType();
+	JSONArray getAllQuestionType(int examId);
 
 	/**
 	 * 
