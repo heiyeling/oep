@@ -138,21 +138,21 @@
 						<label class="col-sm-0 control-label">密码:</label> <input
 							type="password" id="password" placeholder="请输入密码"
 							class="form-control">
-						<div id="psw-nullerror" style="color: red; display: none">密码不能为空！</div>
+						<div id="psw-nullerror" style="color: red; display: none" class="alert alert-danger">密码不能为空！</div>
 					</div>
 					<div class="form-group" id="conPsw">
 						<label class="col-sm-0 control-label">确认密码:</label> <input
 							type="password" placeholder="请确认密码" class="form-control"
 							id="conPassword">
-						<div id="conpsw-nullerror" style="color: red; display: none">密码不能为空！</div>
-						<div id="conpsw-valierror" style="color: red; display: none">两次密码输入不一致！</div>
+						<div id="conpsw-nullerror" style="color: red; display: none" class="alert alert-danger">密码不能为空！</div>
+						<div id="conpsw-valierror" style="color: red; display: none" class="alert alert-danger">两次密码输入不一致！</div>
 					</div>
 					<div class="form-group" id="EMail">
 						<label class="col-sm-0 control-label">E-mail:</label> <input
 							type="text" id="email" placeholder="请输入e-mail"
 							class="form-control">
-						<div id="email-nullerror" style="color: red; display: none">邮箱地址不能为空！</div>
-						<div id="email-checkerror" style="color: red; display: none">邮箱地址不合法！</div>
+						<div id="email-nullerror" style="color: red; display: none" class="alert alert-danger">邮箱地址不能为空！</div>
+						<div id="email-checkerror" style="color: red; display: none" class="alert alert-danger">邮箱地址不合法！</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-0 control-label">手机号：</label> <input
