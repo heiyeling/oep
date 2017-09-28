@@ -1,21 +1,21 @@
 package com.zr.action.ems.examQuestion;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.zr.model.Type;
 import com.zr.service.qktemp.QuestionService;
 import com.zr.service.qktemp.QuestionServiceImpl;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 /**
- * 获取所有题型
+ * 获取所有题型,
+ * 若试卷中已存在某题型的题则返回该类题的数量,分值等;
+ * 否则返回数量分值均为0
+ * 
  * @author Kramer
  *
  */
@@ -29,17 +29,8 @@ public class GetQuestionTypeAction extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("utf-8");
-		List<Type> typeList = qs.getAllQuestionType();
-		JSONArray typeJson = new JSONArray();
-		for(Type tt:typeList){
-			JSONObject temp = new JSONObject();
-			temp.put("questionTypeId", tt.getT_id());
-			temp.put("questionTypeName", tt.getT_name());
-			temp.put("questionNumber", 0);
-			temp.put("questionScore", 0);
-			temp.put("questionTotal", 0);
-			typeJson.add(temp);
-		}
+		int currentExamId = (int)req.getSession().getAttribute("currentExamId");
+		JSONArray typeJson = qs.getAllQuestionType(currentExamId);
 		resp.setCharacterEncoding("utf-8");
 		resp.getWriter().write(typeJson.toString());
 	}

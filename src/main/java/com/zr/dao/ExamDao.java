@@ -3,7 +3,10 @@ package com.zr.dao;
 import java.util.List;
 
 import com.zr.model.Exam;
+import com.zr.model.Exam_question;
 import com.zr.model.Question;
+
+import net.sf.json.JSONArray;
 
 public interface ExamDao {
 	/**
@@ -46,10 +49,10 @@ public interface ExamDao {
 
 	/**
 	 * 批量添加考题
-	 * @param questionIds	
+	 * @param eqList	
 	 * @return	插入成功则返回true
 	 */
-	boolean insertExamQuestions(int examId,int[] questionIds,int score);
+	boolean insertExamQuestions(List<Exam_question> eqList);
 
 	/**
 	 * 通过考试id获取该考试全部的题目信息
@@ -65,5 +68,48 @@ public interface ExamDao {
 	 * @return
 	 */
 	boolean removeQuestionOfExam(int examId, int[] ids);
+
+	/**
+	 * 获取考试某题的分值
+	 * @param currentExamId
+	 * @param q_id
+	 * @return 某考试某题的分值
+	 */
+	int getScore(int examId, int q_id);
+	/**
+	 * 通过考试id,获取题型信息
+	 * @examId 考试id
+	 * @return
+	 */
+	JSONArray getTypeInfo(int examId);
+
+	/**
+	 * 批量更新试题
+	 * @param updateQuestionList 待更新试题
+	 * @return
+	 */
+	boolean updateExamQuestions(List<Exam_question> updateQuestionList);
+
+	/**
+	 * 设置考题:包括更新和新增
+	 * @param insertQuestionList
+	 * @param updateQuestionList
+	 * @return	都成功返回true,否则返回false
+	 */
+	boolean setExamQuestions(List<Exam_question> insertQuestionList, List<Exam_question> updateQuestionList);
+
+	/**
+	 * 更新考试基本信息
+	 * @param exam
+	 * @return
+	 */
+	boolean updateExamInfo(Exam exam);
+
+	/**
+	 * 发布考试
+	 * @param examId
+	 * @return
+	 */
+	boolean issueExam(int examId);
 	
 }
