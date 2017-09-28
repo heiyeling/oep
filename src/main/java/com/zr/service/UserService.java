@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zr.model.User;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public interface UserService {
@@ -28,4 +29,7 @@ public interface UserService {
 	 * @param user
 	 */
 	public int editUser(User user);
+	
+	public JSONArray getUserofscoreAndExam(int u_id);
+	
 }

@@ -183,6 +183,24 @@
   	<servlet-class>com.zr.action.QueryEtimeAction</servlet-class>
   </servlet>
   
+  <servlet-mapping>
+  	<servlet-name>queryUserExamAction</servlet-name>
+  	<url-pattern>/zjx/queryUserExamAction</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>queryUserExamAction</servlet-name>
+  	<servlet-class>com.zr.action.QueryUserExamAction</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>joinWaitExamAction</servlet-name>
+  	<url-pattern>/zjx/joinWaitExamAction</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>joinWaitExamAction</servlet-name>
+  	<servlet-class>com.zr.action.JoinWaitExamAction</servlet-class>
+  </servlet>
+  
   <!-- 用户登录 -->
   <servlet-mapping>
     <servlet-name>loginAction</servlet-name>

@@ -206,4 +206,9 @@ public class ExamServiceImpl implements ExamService {
 		System.out.println(examtime.toString());
 		return examtime.toString();
 	}
+
+	@Override
+	public Exam getExamByE_id(int e_id) {
+		return examDao.getExamById(e_id);
+	}
 }
