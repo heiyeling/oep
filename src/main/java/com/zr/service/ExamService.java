@@ -78,4 +78,6 @@ public interface ExamService {
 	public boolean issueExam(int examId);
 	
 	public String getExamTimeService(int e_id); 
+	
+	public Exam getExamByE_id(int e_id);
 }

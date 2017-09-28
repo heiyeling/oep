@@ -56,4 +56,9 @@ public class UserServiceImpl implements UserService{
 		int i =udao.editUser(user);
 		return i;
 	}
+
+	@Override
+	public JSONArray getUserofscoreAndExam(int u_id) {
+		return udao.getUserofscoreAndExam(u_id);
+	}
 }

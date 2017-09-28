@@ -11,6 +11,9 @@ import com.zr.dao.UserDao;
 import com.zr.model.User;
 import com.zr.utils.JDBCUtil;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 public class UserDaoImpl implements UserDao{
 	/**
 	 * 用户查询
@@ -137,6 +140,41 @@ public class UserDaoImpl implements UserDao{
 			e.printStackTrace();
 		}
 		return i;
+	}
+
+	@Override
+	public JSONArray getUserofscoreAndExam(int u_id) {
+		JSONArray ja = new JSONArray();
+		Connection con = JDBCUtil.getConnection();
+		StringBuffer sql = new StringBuffer("SELECT scoreofuser.e_id,u_id,score,e_name,e_starttime,e_endtime,e_total FROM scoreofuser JOIN exam ON scoreofuser.e_id = exam.e_id WHERE u_id = ?");
+		try {
+			PreparedStatement pst = con.prepareStatement(sql.toString());
+			pst.setInt(1, u_id);
+			ResultSet set = pst.executeQuery();
+			while(set.next()){
+				JSONObject jo = new JSONObject();
+				jo.put("e_id", set.getInt(1));
+				jo.put("u_id", set.getInt(2));
+				jo.put("score", set.getInt(3));
+				jo.put("e_name", set.getString(4));
+				StringBuffer examtime = new StringBuffer();
+				String starttime = set.getString(5).replace("年","/").replace("月", "/").replace("日", "").replace(" ", ",");
+				String endtime = set.getString(6).replace("年","/").replace("月", "/").replace("日", "").replace(" ", ",");
+				examtime.append(starttime);
+				examtime.append(" - ");
+				examtime.append(endtime);
+				jo.put("examtime", examtime.toString());
+				jo.put("e_total", set.getInt(7));
+				ja.add(jo);
+				System.out.println(ja.toString());
+			}
+			System.out.println(ja.toString());
+			return ja;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ja;
 	}
 	
 			

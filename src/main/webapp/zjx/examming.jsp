@@ -24,7 +24,7 @@
         <li role="presentation"><a href="#">首页</a></li>
         <li role="presentation"><a href="#">我的考试</a></li>
         <li role="presentation"><a href="#">个人信息</a></li>
-        <li role="presentation" class="active"><a href="#" style="margin:0px 200px 0px 0px">正在考试</a></li>
+        <li role="presentation" class="active"><a href="#" style="margin:0px 50px 0px 0px">正在考试</a></li>
         <li role="presentation"><h4 id="currenttime" style="margin-right: 50px; color: red"></h4></li>
         <li role="presentation"><h4>名字</h4></li>
     </ul>
@@ -49,10 +49,14 @@
                 <div id="answer" hidden></div>
                 <div id="page" hidden></div>
                 <div id="nextpage" hidden></div>
+                <div id="questionnumhidden" hidden></div>
                 <button id="btn">提交</button>
                 <button id="btn1">交卷</button>
             </div>
             <div id="col3" class="col-md-3" style="border: 1px solid">
+                <div style="margin-top: 20px ;height: 200px; border: 1px solid">
+            		<iframe src="${pageContext.request.contextPath }/ems/sxt.jsp" style="width: 100%;height:250px; "></iframe>
+            	</div>
                 <div id="showbullet" style="margin-top: 20px ;height: 430px; border: 1px solid">1111111</div>
                 <div id="writebullet" style="margin-top: 20px ;height: 100px; border: 1px solid">1111111</div>
             </div>
@@ -78,10 +82,11 @@
 				var questionnum = data.questionnum;
 				var page = data.page;
 				var currentanswer = data.answerofuser.answer;
-				console.log(currentanswer);
+				console.log("questionnumhidden: " + questionnum);
 				$("#q_id").attr("value" , question.q_id);//加入隐藏域
 				$("#t_id").attr("value" , question.t_id);//加入隐藏域
 				$("#page").attr("value" , page);//加入隐藏域
+				$("#questionnumhidden").attr("value" , questionnum);//加入隐藏 
 				for(var i=0; i < questionnum; i++){
 					$("#questionnum").append("<button class='btn btn-default but'>" + (i+1) + "</button>");
 				}
@@ -404,7 +409,6 @@
     $("#btn").click(function(){
     	/* console.log($("#q_id").attr("value")); */
     	if($("#t_id").attr("value") == 1 || $("#t_id").attr("value") == 2){
-    		console.log($('input:radio[name="option"]:checked').val());
         	if($("#t_id").attr("value")==1 && $('input:radio[name="option"]:checked').val() == null){
         		alert('什么都没选中');
         		$.ajax({
@@ -412,48 +416,98 @@
         			data:{
         				'q_id' : $("#q_id").attr("value")
         			},
-        			dataType:'json',
+        			dataType:'text',
+        			error:function(e){
+        				console.log("error")
+        			},
         			success:function(){
-        				$.ajax({
-                			url:'queryQuestionAction',
-                			data:{
-                				'page' : parseInt($("#page").attr("value"))+parseInt(1)
-                			}, 
-                			dataType:'json',
-                			success : function(data){
-                				$("#questionnum").empty();
-                				$("#question").empty();
-                				var exam_question = data.exam_question;
-                				var question = data.question;
-                				var options = data.options;
-                				var questionnum = data.questionnum;
-                				var page = data.page;
-                				var currentanswer = data.answerofuser.answer;
-                				$("#q_id").attr("value" , question.q_id);//加入隐藏域
-                				$("#t_id").attr("value" , question.t_id);//加入隐藏域
-                				$("#page").attr("value" , page);//加入隐藏域
-                				for(var i=0; i < questionnum; i++){
-                					$("#questionnum").append("<button class='btn btn-default but'>" + (i+1) + "</button>");
-                				}
-                				$("#question").append("<h3>"+question.q_content+"</h3>");
-                				if(question.t_id==1){
-                					$.each(options, function(i, v){
-                    					$("#question").append("<input type='radio' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
-                    				})
-                    				radioischecked(currentanswer);
-                				}else if(question.t_id==2){
-                					$.each(options, function(i, v){
-                						$("#question").append("<input type='checkbox' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
-                					})
-                					checkboxischecked(currentanswer);
-                				}else if(question.t_id==3){
-                					$("#question").append("<textarea id='textareaz' name='textareaz' class='form-control' rows='3'></textarea> ");
-                					textareaisempty(currentanswer);
-                				}
-                				
-                				/* $("#q_id").attr("value" , question.q_id); */
-                			}	
-                		})
+        				alert("这是最后一道题了哦1");
+        				console.log("#questionnumhiddenzzz: "+ $("#questionnumhidden").attr("value"))
+        				if($("#page").attr("value")==$("#questionnumhidden").attr("value")){
+        					alert("这是最后一道题了哦");
+        					$.ajax({
+                    			url:'queryQuestionAction',
+                    			data:{
+                    				'page' : parseInt($("#page").attr("value"))+parseInt(1)
+                    			}, 
+                    			dataType:'json',
+                    			success : function(data){
+                    				$("#questionnum").empty();
+                    				$("#question").empty();
+                    				var exam_question = data.exam_question;
+                    				var question = data.question;
+                    				var options = data.options;
+                    				var questionnum = data.questionnum;
+                    				var page = data.page;
+                    				var currentanswer = data.answerofuser.answer;
+                    				$("#q_id").attr("value" , question.q_id);//加入隐藏域
+                    				$("#t_id").attr("value" , question.t_id);//加入隐藏域
+                    				$("#page").attr("value" , page);//加入隐藏域
+                    				for(var i=0; i < questionnum; i++){
+                    					$("#questionnum").append("<button class='btn btn-default but'>" + (i+1) + "</button>");
+                    				}
+                    				$("#question").append("<h3>"+question.q_content+"</h3>");
+                    				if(question.t_id==1){
+                    					$.each(options, function(i, v){
+                        					$("#question").append("<input type='radio' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
+                        				})
+                        				radioischecked(currentanswer);
+                    				}else if(question.t_id==2){
+                    					$.each(options, function(i, v){
+                    						$("#question").append("<input type='checkbox' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
+                    					})
+                    					checkboxischecked(currentanswer);
+                    				}else if(question.t_id==3){
+                    					$("#question").append("<textarea id='textareaz' name='textareaz' class='form-control' rows='3'></textarea> ");
+                    					textareaisempty(currentanswer);
+                    				}
+                    				
+                    				/* $("#q_id").attr("value" , question.q_id); */
+                    			}	
+                    		})
+        				}else{
+        					$.ajax({
+                    			url:'queryQuestionAction',
+                    			data:{
+                    				'page' : parseInt($("#page").attr("value"))+parseInt(1)
+                    			}, 
+                    			dataType:'json',
+                    			success : function(data){
+                    				$("#questionnum").empty();
+                    				$("#question").empty();
+                    				var exam_question = data.exam_question;
+                    				var question = data.question;
+                    				var options = data.options;
+                    				var questionnum = data.questionnum;
+                    				var page = data.page;
+                    				var currentanswer = data.answerofuser.answer;
+                    				$("#q_id").attr("value" , question.q_id);//加入隐藏域
+                    				$("#t_id").attr("value" , question.t_id);//加入隐藏域
+                    				$("#page").attr("value" , page);//加入隐藏域
+                    				for(var i=0; i < questionnum; i++){
+                    					$("#questionnum").append("<button class='btn btn-default but'>" + (i+1) + "</button>");
+                    				}
+                    				$("#question").append("<h3>"+question.q_content+"</h3>");
+                    				if(question.t_id==1){
+                    					$.each(options, function(i, v){
+                        					$("#question").append("<input type='radio' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
+                        				})
+                        				radioischecked(currentanswer);
+                    				}else if(question.t_id==2){
+                    					$.each(options, function(i, v){
+                    						$("#question").append("<input type='checkbox' id='"+ v.abcd + "' class='option' name='option' value="+v.abcd+"><span>"+v.abcd+". "+v.o_content+"<span><br>");
+                    					})
+                    					checkboxischecked(currentanswer);
+                    				}else if(question.t_id==3){
+                    					$("#question").append("<textarea id='textareaz' name='textareaz' class='form-control' rows='3'></textarea> ");
+                    					textareaisempty(currentanswer);
+                    				}
+                    				
+                    				/* $("#q_id").attr("value" , question.q_id); */
+                    			}	
+                    		})
+        				}
+        				
         			}
         		})
         		
@@ -647,8 +701,9 @@
     	$("#textareaz").html(answer);
     }
     
+    
  }
     
-        		
+      		
 </script>
 </html>
